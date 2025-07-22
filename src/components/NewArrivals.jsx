@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import { motion } from "framer-motion";
 import { CartContext } from "../context/CartContext";
 import stars from "../assets/Group 628218.png"
+import { Link } from "react-router-dom";
 
 const NewArrivals = () => {
   const [collections, setCollections] = useState([]);
@@ -100,7 +101,9 @@ const NewArrivals = () => {
           ) : (
             collections.map((collection, index) => (
               <SwiperSlide key={index}>
-                <motion.div
+               {/* <Link to={`/product/${collection.id}`}> */}
+               <Link to="product-detail">
+                 <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1 }}
@@ -126,6 +129,7 @@ const NewArrivals = () => {
 
                   {/* Details */}
                   <div className="flex flex-col mx-4 text-left pr-10 mt-2 lg:mt-2 font-rubik font-medium">
+                    
                     <p className="text-body-mobile lg:text-body-desktop">
                       {collection.title}
                     </p>
@@ -157,6 +161,7 @@ const NewArrivals = () => {
                     <button onClick={() => handleAddToCart(collection)}>ADD TO CART</button>
                   </div>
                 </motion.div>
+               </Link>
               </SwiperSlide>
             ))
           )}

@@ -309,7 +309,7 @@ const BasicProducts = () => {
               </p>
             </div>
           </div>
-          <div className="w-full grid grid-cols-2 lg:grid-cols-3 mt-4 gap-4">
+          <div className="w-full grid grid-cols-2 lg:grid-cols-3 mt-8 gap-4">
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
@@ -320,7 +320,7 @@ const BasicProducts = () => {
                     <img
                       src={product.imageUrls?.[0] || "https://via.placeholder.com/150"}
                       alt={product.title}
-                      className="w-full h-auto transform group-hover:scale-105 transition-transform duration-300"
+                      className="w-auto h-auto lg:h-[350px] m-auto  transform group-hover:scale-105 transition-transform duration-300"
                     />
                   </Link>
                 </div>
@@ -329,19 +329,20 @@ const BasicProducts = () => {
                     <p className="group-hover:text-blue-600 transition-colors duration-200">{product.title}</p>
                   </div>
                   <div className="mt-2 flex items-center gap-2">
-                    <img className="w-20 h-4" src={star} alt="Rating Stars" />
-                    <p className="font-rubik text-[10px] mt-1 text-arrivals-rating font-light">
+                    <img className="w-24 h-4" src={star} alt="Rating Stars" />
+                    <p className="font-rubik text-[14px]  text-arrivals-rating font-light">
                       {product.rating || 2000}
                     </p>
                   </div>
                   <div className="mt-4 font-rubik">
                     <p className="text-[16px] space-x-2">
-                      <span className="line-through text-sub-text-best text-[10px]">
-                        ₹{new Intl.NumberFormat("en-IN").format(Number(product.price) + 500)}.00
-                      </span>
                       <span className="text-black">
-                        ₹{new Intl.NumberFormat("en-IN").format(Number(product.price))}.00
+                        ₹{new Intl.NumberFormat("en-IN").format(Number(product.price))}
                       </span>
+                      <span className="line-through text-sub-text-best text-[10px]">
+                        ₹{new Intl.NumberFormat("en-IN").format(Number(product.price) + 500)}
+                      </span>
+                      
                     </p>
                   </div>
                 </div>

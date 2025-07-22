@@ -22,7 +22,7 @@ const Home = () => {
 
       <div className="w-full relative">
         <div className="w-full relative">
-          <img className="w-full h-[500px] lg:h-full" src={home} alt="" />
+          <img className="w-full h-[500px] lg:h-[calc(100vh-88px)]" src={home} alt="" />
         </div>
         <motion.div className="w-full  text-center lg:text-left lg:w-2/5 top-1/2  lg:top-1/2 left-0 absolute transform -translate-y-1/2 lg:ml-20 px-8 flex flex-col items-start justify-start">
           <motion.p

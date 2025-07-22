@@ -18,13 +18,13 @@ const Collection = () => {
   ];
 
   return (
-    <div className="mt-10 lg:mt-20">
+    <div className="mt-10 lg:mt-10">
       <div className="text-center">
         <motion.h1
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="font-rubik font-medium lg:text-h2-desktop text-h2-mobile text-home-bg-black"
+          className="font-rubik font-medium lg:text-h3-desktop text-h2-mobile text-home-bg-black"
         >
           DISCOVER OUR
         </motion.h1>
@@ -32,7 +32,7 @@ const Collection = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="font-tomorrow font-bold lg:text-h1-desktop text-h1-mobile text-home-bg-black"
+          className="font-tomorrow font-bold lg:text-h2-desktop text-h1-mobile text-home-bg-black"
         >
           COLLECTIONS
         </motion.h1>
@@ -63,7 +63,7 @@ const Collection = () => {
               slidesPerView: 2.5,
             },
             1024: {
-              slidesPerView: 3.5,
+              slidesPerView: 4.2,
             },
           }}
         >

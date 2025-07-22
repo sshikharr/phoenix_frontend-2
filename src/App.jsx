@@ -82,7 +82,9 @@ function App() {
           <Route path="/track-order-mobile" element={<TrackOrderMobile />} />
           <Route path="/add-product" element={<AddProduct />} />
           <Route path="/add-category" element={<AddCategory />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
+          {/* <Route path="/product/:id" element={<ProductDetail />} /> */}
+          <Route path="/product-detail" element={<ProductDetail />} />
+
           {/*Collections */}
           <Route path="/gaming-chairs" element={<GamingProducts />} />
           <Route path="/basic-chairs" element={<BasicProducts />} />
