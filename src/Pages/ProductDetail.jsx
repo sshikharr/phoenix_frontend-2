@@ -1,298 +1,4 @@
-// import React, { useEffect, useState, Suspense } from "react";
-
-// import { useLocation, Link, useParams } from "react-router-dom";
-// import star from "../assets/start.png";
-// import direction from "../assets/Group .png";
-// import delivery from "../assets/delivery.svg";
-// import payment from "../assets/payment-method.svg";
-// import exchange from "../assets/transfer.svg";
-
-// // Product Detail
-// import { getProducts } from "../services/productService";
-// import products from "../products";
-// import Header from "../common/Header";
-
-// const Footer = React.lazy(() => import("../components/Footer"));
-
-// const ProductDetail = () => {
-//   // const [products, setProducts] = useState(null);
-//   const [pinCode, setPinCode] = useState("");
-//   const [productDetail, setProductDetail] = useState([]);
-//   const [isCheckPin, setIsCheckPin] = useState(false);
-
-//   useEffect(() => {
-//     window.scrollTo(0, 0); // Scroll to the top of the page
-//   }, []);
-
-//   const { id } = useParams();
-
-//   useEffect(() => {
-//     const fetchedProduct = products.find(
-//       (product) => String(product.id) === id
-//     );
-//     setProductDetail(fetchedProduct);
-//   }, []);
-
-//   const [items, setItems] = useState(1);
-
-//   // Handle item count change
-//   const handleDecrement = () => {
-//     if (items > 1) {
-//       setItems(items - 1); // Decrease item count, ensuring it doesn't go below 1
-//     }
-//   };
-
-//   const handleIncrement = () => {
-//     setItems(items + 1); // Increase item count
-//   };
-
-//   const handleInputChange = (e) => {
-//     setPinCode(e.target.value);
-//   };
-
-//   const handleCheckPin = () => {
-//     if (isCheckPin) {
-//       // Reset state when "Change" is clicked
-//       setPinCode("");
-//       setIsCheckPin(false);
-//     } else if (pinCode.trim()) {
-//       // Show additional content when "Check" is clicked
-//       setIsCheckPin(true);
-//     }
-//   };
-
-//   const [mainImage, setMainImage] = useState(productDetail?.image1);
-
-//   if (!productDetail) return null;
-
-//   const images = [
-//     productDetail.image1,
-//     productDetail.image2,
-//     productDetail.image3,
-//     productDetail.image4,
-//   ];
-
-//   return (
-//     <div className="w-full h-screen">
-//       <Header />
-
-//       {/* -----------------------Product Image Section---------------------------- */}
-//       <div className="w-full px-8 lg:px-32  h-fit lg:flex mt-0 lg:mt-16">
-//         <div className="w-full lg:w-1/2 h-full mt-4">
-//           {/* Main Image */}
-//           <div className="h-[400px]">
-//             <img
-//               className="h-[400px] w-auto m-auto object-contain cursor-pointer"
-//               src={mainImage || productDetail.image1}
-//               alt="Product main view"
-//             />
-//           </div>
-
-//           {/* Thumbnail Images */}
-//           <div className="lg:h-[150px] flex justify-center gap-2 lg:gap-4 mt-4">
-//             {images.map((image, index) => (
-//               <img
-//                 key={index}
-//                 src={image}
-//                 alt={`Product view ${index + 1}`}
-//                 className={`h-[80px] lg:h-[100px] w-auto object-contain cursor-pointer transition-all duration-200 ${
-//                   mainImage === image
-//                     ? "border-2 border-blue-500"
-//                     : "opacity-70 hover:opacity-100"
-//                 }`}
-//                 onClick={() => setMainImage(image)}
-//               />
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* Product Details */}
-//         <div className="w-full lg:w-1/2 h-full">
-//           <div className=" h-full">
-//             {productDetail && (
-//               <div key={products.id} className="pr-0 mt-6">
-//                 <p className="font-rubik lg:text-h4-desktop text-body-mobile ">
-//                   {productDetail.description}
-//                 </p>
-//                 <p className="flex items-center  gap-2 mt-4">
-//                   <img className="h-4 w-24" src={star} alt="" />{" "}
-//                   <span className="text-arrivals-rating font-light font-rubik text-[10px] mt-1">
-//                     2000
-//                   </span>
-//                 </p>
-//                 <p className=" mt-6 font-rubik">
-//                   <span className="font-medium text-black text-h4-mobile lg:text-h4-desktop">
-//                     {/* ₹{new Intl.NumberFormat("en-IN").format(Number(productDetail.actualPrice.replace(/,/g, "")))}.00 */}
-//                     ₹{productDetail.actualPrice}.00
-//                   </span>{" "}
-//                   <span className="text-gray-price text-[10px] line-through pl-4">
-//                     {/* ₹{new Intl.NumberFormat("en-IN").format(Number(productDetail.price.replace(/,/g, "")))}.00 */}
-//                     ₹{productDetail.price}.00
-//                   </span>{" "}
-//                   <span className="font-medium text-off-text text-subtext-mobile lg:text-subtext-desktop pl-3">
-//                     (65% OFF)
-//                   </span>
-//                 </p>
-//                 <p className="font-rubik text-tax-text text-[12px] ">
-//                   Inclusive of all taxes
-//                 </p>
-//               </div>
-//             )}
-//           </div>
-
-//           <div className="mt-4">
-//             <div className="hidden lg:block">
-//               <div>
-//                 <p className="font-rubik text-quantity-text font-light text-[18px]">
-//                   Quantity
-//                 </p>
-//               </div>
-
-//               {/* Items */}
-//               <div className="mt-2 flex items-center gap-4">
-//                 <div className="relative">
-//                   {/* Decrement Button */}
-//                   <button
-//                     onClick={handleDecrement}
-//                     className="absolute top-1/2 left-2 text-2xl transform -translate-y-1/2 text-quantity-value"
-//                   >
-//                     -
-//                   </button>
-
-//                   {/* Input Field */}
-//                   <input
-//                     className="border  w-28 py-4 text-center rounded-[8px] text-xl text-quantity-value border-quantity-border"
-//                     type="text"
-//                     value={items}
-//                     readOnly
-//                   />
-
-//                   {/* Increment Button */}
-//                   <button
-//                     onClick={handleIncrement}
-//                     className="absolute top-1/2 right-2 text-2xl transform -translate-y-1/2 text-quantity-value"
-//                   >
-//                     +
-//                   </button>
-//                 </div>
-
-//                 <div>
-//                   <button className="py-4 border px-8 bg-home-bg-black text-white font-rubik">
-//                     ADD TO CART
-//                   </button>
-//                 </div>
-//               </div>
-//             </div>
-//             {/* For Mobile */}
-//             <div className="lg:hidden">
-//               <div className="w-full m-auto flex justify-center items-center">
-//                 <div className="w-2/5">
-//                   <p className="font-rubik text-quantity-text font-light text-h2-mobile ">
-//                     Quantity
-//                   </p>
-//                 </div>
-//                 <div className="w-3/5">
-//                   <div className="relative">
-//                     {/* Decrement Button */}
-//                     <button
-//                       onClick={handleDecrement}
-//                       className="absolute top-1/2 left-4 text-h2-mobile transform -translate-y-1/2 text-quantity-value"
-//                     >
-//                       -
-//                     </button>
-
-//                     {/* Input Field */}
-//                     <input
-//                       className="border w-full py-4 text-center rounded-[8px] text-h2-mobile text-quantity-value border-quantity-border"
-//                       type="text"
-//                       value={items}
-//                       readOnly
-//                     />
-
-//                     {/* Increment Button */}
-//                     <button
-//                       onClick={handleIncrement}
-//                       className="absolute top-1/2 right-4 text-h2-mobile transform -translate-y-1/2 text-quantity-value"
-//                     >
-//                       +
-//                     </button>
-//                   </div>
-//                 </div>
-//               </div>
-//               <div>
-//                 <button className="w-full mt-4 m-auto flex py-4 border px-8 bg-home-bg-black text-white font-rubik">
-//                   ADD TO CART
-//                 </button>
-//               </div>
-//             </div>
-
-//             {/* Availability */}
-//             <div className="mt-8">
-//               <h1 className="flex items-center gap-4 font-rubik font-medium lg:text-h4-desktop text-h4-mobile text-home-bg-black">
-//                 {" "}
-//                 <img className="w-4 h-6" src={direction} alt="" />
-//                 Check for Delivery Details
-//               </h1>
-//               <div className="relative mt-4">
-//                 <input
-//                   type="text"
-//                   value={pinCode}
-//                   onChange={handleInputChange}
-//                   placeholder="Enter your pincode"
-//                   className="w-full lg:w-2/3 border border-check-border py-4 rounded-[8px] placeholder:text-[18px] pl-4 font-rubik placeholder:font-rubik"
-//                 />
-//                 <button
-//                   onClick={handleCheckPin}
-//                   disabled={!pinCode.trim() && !isCheckPin} // Disable when no input and not in "Change" state
-//                   className={`absolute right-4 lg:right-[35%] font-rubik text-[14px] top-1/2 -translate-y-1/2 ${
-//                     pinCode.trim() || isCheckPin
-//                       ? "text-home-bg-black cursor-pointer"
-//                       : "text-home-bg-black cursor-not-allowed"
-//                   }`}
-//                 >
-//                   {!isCheckPin ? "Check" : "Change"}
-//                 </button>
-//               </div>
-//               <p className="text-tax-text text-[9px] lg:text-subtext-desktop">
-//                 Please enter PIN code to check delivery time & Pay on Delivery
-//                 Availability
-//               </p>
-//               {isCheckPin && (
-//                 <div className="mt-2 space-y-4">
-//                   <p className="flex items-center gap-6 font-rubik text-[16px]">
-//                     <img className="w-8" src={delivery} alt="" />
-//                     Get it by Fri, Jan 03
-//                   </p>
-//                   <p className="flex items-center gap-6 font-rubik text-[16px]">
-//                     <img className="w-8" src={payment} alt="" />
-//                     Pay on delivery available
-//                   </p>
-//                   <p className="flex items-center gap-6 font-rubik text-[16px]">
-//                     <img className="w-8" src={exchange} alt="" />
-//                     Easy 7 days return & exchange available
-//                   </p>
-//                 </div>
-//               )}
-//               <div className="mt-4 font-rubik text-black text-[10px] lg:text-subtext-desktop">
-//                 <p>100% Original Products</p>
-//                 <p>Pay on delivery might be available</p>
-//                 <p>Easy 30 days returns and exchanges</p>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       <Suspense>
-//         <Footer />
-//       </Suspense>
-//     </div>
-//   );
-// };
-
-// export default ProductDetail;
-
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import star from "../assets/start.png";
 import direction from "../assets/Group .png";
 import delivery from "../assets/delivery.svg";
@@ -304,6 +10,9 @@ import chair1 from "../assets/chair1.png";
 import chair2 from "../assets/chair2.png";
 import chair3 from "../assets/chair3.png";
 import chair4 from "../assets/chair4.png";
+import star2 from "../assets/star 1.png";
+import star3 from "../assets/star 2.png";
+import star4 from "../assets/StarWhite.png";
 
 const ProductDetail = () => {
   const [pinCode, setPinCode] = useState("");
@@ -322,7 +31,7 @@ const ProductDetail = () => {
     switch (activeTab) {
       case "description":
         return (
-          <div className="mt-4 space-y-4 text-[#2d2d2d]">
+          <div className="mt-4 space-y-4 text-[#2d2d2d] font-rubik lg:text-[18px] text-[18px]">
             <p>
               Introducing our Premium Ergonomic Office Chair – expertly crafted
               to deliver maximum comfort, posture support, and stylish
@@ -352,7 +61,7 @@ const ProductDetail = () => {
 
       case "shipping":
         return (
-          <div className="mt-4 space-y-3 text-[#2d2d2d]">
+          <div className="mt-4 space-y-3 text-[#2d2d2d] font-rubik lg:text-[18px] text-[18px]">
             <p>
               <strong>Delivery Time:</strong> Orders are typically shipped
               within 1-2 business days. Delivery may take 3-7 business days
@@ -377,7 +86,7 @@ const ProductDetail = () => {
 
       case "return":
         return (
-          <div className="mt-4 space-y-3 text-[#2d2d2d]">
+          <div className="mt-4 space-y-3 text-[#2d2d2d] font-rubik lg:text-[18px] text-[18px]">
             <p>
               <strong>Easy 7-Day Return Policy:</strong> Not satisfied with your
               purchase? Return it within 7 days of delivery—no questions asked.
@@ -483,7 +192,7 @@ const ProductDetail = () => {
         {/* Product Details */}
         <div className="w-full lg:w-1/2 h-full">
           <div className="h-full mt-6">
-            <p className="font-rubik lg:text-h4-desktop text-body-mobile">
+            <p className="font-rubik lg:text-h4-desktop text-body-mobile font-medium">
               {productDetail.description}
             </p>
             <p className="flex items-center gap-2 mt-4">
@@ -588,32 +297,135 @@ const ProductDetail = () => {
                   <img className="w-8" src={exchange} alt="exchange" />
                   Easy 7 days return & exchange available
                 </p>
-                
               </div>
             )}
           </div>
         </div>
       </div>
 
+      {/* Detail */}
       <div className="lg:px-32 px-8 mt-6">
-        <div className="flex text-[#2d2d2d] gap-4 lg:gap-12 font-rubik font-medium text-[12px] lg:text-[22px] border-b border-[#B2B2B2] w-fit lg:pr-20 lg:py-0">
-          {tabs.map((tab) => (
-            <p
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={`cursor-pointer pb-2 ${
-                activeTab === tab.key
-                  ? "border-b-2 border-[#000000]"
-                  : "border-b-2 border-transparent"
-              }`}
-            >
-              {tab.label}
-            </p>
-          ))}
+        <div className="overflow-x-auto scrollbar-hide lg:overflow-visible">
+          <div className="flex text-[#2d2d2d] gap-4 lg:gap-12 items-baseline font-rubik text-[18px]  border-b border-[#B2B2B2] w-max lg:w-[70%] lg:py-0 px-0 ">
+            {tabs.map((tab) => (
+              <p
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`cursor-pointer pb-2 whitespace-nowrap ${
+                  activeTab === tab.key
+                    ? "border-b-2 border-[#000000] font-medium lg:text-[22px]"
+                    : "border-b-2 border-transparent font-normal lg:text-[18px]"
+                }`}
+              >
+                {tab.label}
+              </p>
+            ))}
+          </div>
         </div>
 
         <div className="text-[#2d2d2d] font-rubik text-[18px] lg:text-[20px] mt-6">
           {renderContent()}
+        </div>
+      </div>
+      {/* Rating */}
+      <div className="lg:px-32 px-8 mt-10 ">
+        <div className="border-t-[1px] border-b-[1px] border-[#b2b2b2] lg:w-[70%] py-6 lg:py-10">
+          <p className="text-[#292829] font-medium lg:text-[22px] text-[20px]">
+            Rating
+          </p>
+          <div className="flex gap-6 lg:gap-10 mt-2">
+            <div className="flex items-center gap-2">
+              <p className="font-rubik text-[28px]  lg:text-[36px]">4.2</p>
+              <img className="h-6 w-auto" src={star2} alt="" />
+            </div>
+            <div className="border-l-[1px] border-[#aaaaaa] py-2 px-4">
+              <div className="flex items-center gap-2">
+                <p className="font-rubik text-[#7F7F7F] lg:text-[16px]">5</p>
+                <img className="w-2" src={star3} alt="" />
+                <div className="relative w-24 lg:w-28 h-1 bg-[#D9D9D9] overflow-hidden">
+                  <div className="absolute left-0 top-0 h-full bg-[#5CB85C] w-[90%]"></div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="font-rubik text-[#7F7F7F] lg:text-[16px]">4</p>
+                <img className="w-2" src={star3} alt="" />
+                <div className="relative w-24 lg:w-28 h-1 bg-[#D9D9D9] overflow-hidden">
+                  <div className="absolute left-0 top-0 h-full bg-[#80E3A6] w-[75%]"></div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="font-rubik text-[#7F7F7F] lg:text-[16px]">3</p>
+                <img className="w-2" src={star3} alt="" />
+                <div className="relative w-24 lg:w-28 h-1 bg-[#D9D9D9] overflow-hidden">
+                  <div className="absolute left-0 top-0 h-full bg-[#FFC107] w-[45%]"></div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="font-rubik text-[#7F7F7F] lg:text-[16px]">2</p>
+                <img className="w-2" src={star3} alt="" />
+                <div className="relative w-24 lg:w-28 h-1 bg-[#D9D9D9] overflow-hidden">
+                  <div className="absolute left-0 top-0 h-full bg-[#FD7E14] w-[55%]"></div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="font-rubik text-[#7F7F7F] lg:text-[16px]">1</p>
+                <img className="w-2" src={star3} alt="" />
+                <div className="relative w-24 lg:w-28 h-1 bg-[#D9D9D9] overflow-hidden">
+                  <div className="absolute left-0 top-0 h-full bg-[#DC3545] w-[35%]"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Review */}
+      <div className="lg:px-32 px-8 lg:mt-10 mt-6">
+        <p className="text-[2d2d2d] font-rubik font-medium lg:text-[20px]">
+          Customer Reviews (18)
+        </p>
+        <div className="flex items-baseline gap-4 border-b-[1px] border-[#666666] py-4 lg:py-6">
+          <div className="flex gap-1 h-fit items-center bg-green-500 px-2">
+            <p className="font-rubik text-white lg:text-[12px]">5</p>
+            <svg
+              fill="#fff"
+              width="12px"
+              height="12px"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M 30.335938 12.546875 L 20.164063 11.472656 L 16 2.132813 L 11.835938 11.472656 L 1.664063 12.546875 L 9.261719 19.394531 L 7.140625 29.398438 L 16 24.289063 L 24.859375 29.398438 L 22.738281 19.394531 Z"></path>
+            </svg>
+          </div>
+          <div className="font-rubik font-light text-[#292829] lg:text-[20px]">
+            <p>
+              We’ve equipped our entire workspace with these chairs, and the
+              feedback has been overwhelmingly positive. Their ergonomic design
+              has made a noticeable difference in reducing fatigue and improving
+              focus during long work hours.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-baseline gap-4 border-b-[1px] border-[#666666] py-4 lg:py-6">
+          <div className="flex gap-1 h-fit items-center bg-[#80E3A6] px-2">
+            <p className="font-rubik text-white lg:text-[12px]">4</p>
+            <svg
+              fill="#fff"
+              width="12px"
+              height="12px"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M 30.335938 12.546875 L 20.164063 11.472656 L 16 2.132813 L 11.835938 11.472656 L 1.664063 12.546875 L 9.261719 19.394531 L 7.140625 29.398438 L 16 24.289063 L 24.859375 29.398438 L 22.738281 19.394531 Z"></path>
+            </svg>
+          </div>
+          <div className="font-rubik font-light text-[#292829] lg:text-[20px]">
+            <p>
+              We’ve equipped our entire workspace with these chairs, and the
+              feedback has been overwhelmingly positive. Their ergonomic design
+              has made a noticeable difference in reducing fatigue and improving
+              focus during long work hours.
+            </p>
+          </div>
         </div>
       </div>
 

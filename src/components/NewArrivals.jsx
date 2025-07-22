@@ -102,7 +102,7 @@ const NewArrivals = () => {
             collections.map((collection, index) => (
               <SwiperSlide key={index}>
                 {/* <Link to={`/product/${collection.id}`}> */}
-                <Link to="product-detail">
+                <Link >
                   <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -117,6 +117,7 @@ const NewArrivals = () => {
 
                     {/* Product Image */}
                     <div className="flex justify-center">
+                      <Link to="product-detail">
                       <img
                         className="h-[250px] lg:h-[300px] object-contain transition-transform duration-300 hover:scale-105"
                         src={
@@ -124,7 +125,8 @@ const NewArrivals = () => {
                           "https://via.placeholder.com/300"
                         }
                         alt={collection.title}
-                      />
+                        />
+                        </Link>
                     </div>
 
                     {/* Details */}

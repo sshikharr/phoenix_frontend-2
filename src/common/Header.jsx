@@ -89,17 +89,27 @@ const Header = () => {
         </div>
 
         {/* Info */}
-        <div className="w-4/5 px-2 h-fit pt-2">
-          <p className="text-body-mobile lg:text-body-desktop font-roboto">
-            {cart.title}
-          </p>
-          <p className="text-subtext-mobile lg:text-subtext-desktop font-roboto">
-            {cart.description}
-          </p>
-          <p className="text-[10px] mt-1 font-roboto">Color: Brown</p>
-          <p className="mt-2 text-body-mobile lg:text-body-desktop font-roboto">
-            ₹{new Intl.NumberFormat("en-IN").format(price)}.00
-          </p>
+        <div className="w-4/5 lg:w-4/5 px-0 h-fit pt-2">
+          <div className="w-full flex gap-1">
+            <div className="w-[60%]">
+              <p className="text-body-mobile lg:text-[18px] font-roboto line-clamp-2">
+                {cart.title} Lorem ipsum, dolor sit amet consectetur adipisicing
+                elit. Dolorem, deserunt!
+              </p>
+              {/* <p className="text-subtext-mobile lg:text-subtext-desktop font-roboto">
+                {cart.description}
+              </p> */}
+              <p className="text-[10px] mt-1 font-roboto">Color: Brown</p>
+              <p className="mt-2 text-body-mobile lg:text-body-desktop font-roboto">
+                ₹{new Intl.NumberFormat("en-IN").format(price)}.00
+              </p>
+            </div>
+            <div className="w-[40%] flex justify-end">
+              <p className="mt-2 text-body-mobile lg:text-body-desktop font-roboto">
+                ₹{new Intl.NumberFormat("en-IN").format(price)}
+              </p>
+            </div>
+          </div>
 
           {/* Quantity + Remove */}
           <div className="w-full flex py-2 items-center mt-2">
@@ -127,12 +137,25 @@ const Header = () => {
             </div>
 
             {/* Remove */}
-            <div className="w-1/2 h-fit flex justify-center">
+            <div className="w-1/2 h-fit flex justify-start lg:pl-4">
               <button
                 onClick={() => removeFromCart(cart.id)}
-                className="border-b-2 text-subtext-mobile lg:text-subtext-desktop px-2"
+                className="text-subtext-mobile lg:text-subtext-desktop px-2"
               >
-                Remove
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                  />
+                </svg>
               </button>
             </div>
           </div>
@@ -217,9 +240,11 @@ const Header = () => {
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded); // Toggle the expanded state
+    setIsExpanded2(false);
   };
   const handleToggle2 = () => {
     setIsExpanded2(!isExpanded2); // Toggle the expanded state
+    setIsExpanded(false);
   };
 
   const collections = [
@@ -243,12 +268,15 @@ const Header = () => {
   useEffect(() => {
     if (isCartOpen) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = "unset"; // Cleanup
+      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
     };
   }, [isCartOpen]);
 
@@ -280,6 +308,8 @@ const Header = () => {
       document.body.style.overflow = "unset";
     };
   }, [isMenuOpen]);
+
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <div className="w-full">
@@ -444,54 +474,78 @@ const Header = () => {
       <div>
         {isCartOpen && (
           <div className="fixed inset-0 z-20 bg-black bg-opacity-50">
-            <div className="w-full h-full bg-white lg:w-1/3 fixed lg:right-0 lg:left-auto p-4 lg:p-6">
+            <div className="w-full h-full bg-[#fbfbfb] lg:w-1/3 fixed lg:right-0 lg:left-auto p-4 lg:p-6">
               <div className="flex justify-between items-center">
-                <p className="font-roboto font-semibold lg:text-[24px] text-[20px]">
-                  Shopping Cart
+                <p className="font-rubik font-semibold lg:text-[24px] text-[20px]">
+                  Your cart
                 </p>
-                <img
+
+                <svg
                   onClick={() => setIsCartOpen(false)}
-                  className="w-6 h-6 cursor-pointer"
-                  src={close}
-                  alt=""
-                />
+                  fill="#5a5a5a"
+                  className="w-10 h-12 cursor-pointer"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g data-name="Layer 2">
+                    <g data-name="close">
+                      <rect
+                        width="24"
+                        height="24"
+                        transform="rotate(180 12 12)"
+                        opacity="0"
+                      ></rect>
+
+                      <path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
+                    </g>
+                  </g>
+                </svg>
               </div>
-              <div className="px-0">
+              <div className="flex justify-between items-center border-b-[1px] text-[#c1c1c1] border-[#c1c1c1] py-3">
+                <p className="font-roboto font-normal lg:text-[14px] text-[16px]">
+                  PRODUCT
+                </p>
+
+                <p className="lg:text-[14px]">TOTAL</p>
+              </div>
+              <div className="px-0 mt-4">
                 {cartItems.length === 0 ? (
-                <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-                  <div className="relative mb-6">
-                    <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
-                      <ShoppingCart className="w-12 h-12 text-gray-400" />
+                  <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+                    <div className="relative mb-6">
+                      <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
+                        <ShoppingCart className="w-12 h-12 text-gray-400" />
+                      </div>
+                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm font-bold">0</span>
+                      </div>
                     </div>
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">0</span>
-                    </div>
+
+                    {/* Main Heading */}
+                    <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 text-center">
+                      Your cart is empty
+                    </h2>
+
+                    {/* Subtext */}
+                    <p className="text-gray-600 text-center mb-8 max-w-md leading-relaxed">
+                      Looks like you haven't added any items to your cart yet.
+                      Start shopping to find amazing products!
+                    </p>
+
+                    {/* Continue Shopping Button */}
+                    <button
+                      className="bg-home-bg hover:bg-black text-black hover:text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 flex items-center gap-2 mb-6"
+                      onClick={() => setIsCartOpen(false)}
+                    >
+                      Continue shopping
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
-
-                  {/* Main Heading */}
-                  <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 text-center">
-                    Your cart is empty
-                  </h2>
-
-                  {/* Subtext */}
-                  <p className="text-gray-600 text-center mb-8 max-w-md leading-relaxed">
-                    Looks like you haven't added any items to your cart yet. 
-                    Start shopping to find amazing products!
-                  </p>
-
-                  {/* Continue Shopping Button */}
-                  <button className="bg-home-bg hover:bg-black text-black hover:text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 flex items-center gap-2 mb-6"
-                  onClick={() => setIsCartOpen(false)}>
-                    Continue shopping
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
                 ) : (
                   <List
                     height={
                       window.innerWidth < 768
                         ? window.innerHeight - 230
-                        : window.innerHeight - 240
+                        : window.innerHeight - 350
                     }
                     itemCount={cartItems.length}
                     itemSize={220}
@@ -504,7 +558,7 @@ const Header = () => {
 
               {/* Fixed Cart Footer */}
               {cartItems.length > 0 && (
-                <div className="absolute bottom-0 left-0 w-full p-4 bg-white">
+                <div className="absolute bottom-0 left-0 w-full p-4 bg-white border-t-[1px]">
                   <div className="flex lg:gap-4 gap-4">
                     <img
                       className="border rounded-[5px] h-10 lg:h-12 p-2 w-auto"
@@ -523,20 +577,25 @@ const Header = () => {
                     />
                   </div>
 
-                  <div className="flex justify-between items-center mt-2">
-                    <p className="font-roboto font-semibold lg:text-[24px] text-[20px]">
-                      Sub Total
+                  <div className="flex justify-between items-center mt-4">
+                    <p className="font-rubik font-semibold lg:text-[24px] text-[20px]">
+                      Estimated total
                     </p>
-                    <p>
+                    <p className="lg:text-[24px] font-roboto">
                       ₹{" "}
                       {new Intl.NumberFormat("en-IN").format(
                         calculateSubtotal()
                       )}
                     </p>
                   </div>
+                  <p className="font-rubik mt-2 text-[#2a2a2a]">
+                    Taxes, Discounts and{" "}
+                    <span className="underline">shipping</span> calculated at
+                    checkout
+                  </p>
 
                   <button
-                    className="w-full bg-black text-white text-center py-2 font-roboto lg:text-[18px] text-[16px] mt-2"
+                    className="w-full bg-black text-white text-center py-2 font-roboto lg:text-[18px] text-[16px] mt-4"
                     onClick={(e) => {
                       e.preventDefault();
                       setIsCheckOut(true);
@@ -562,50 +621,139 @@ const Header = () => {
             transition={{ duration: 0.5 }}
             className="fixed inset-0 z-50 bg-black bg-opacity-50"
           >
-            <div
-              className="fixed lg:w-1/3 w-full lg:left-[30%] bg-white py-10 mt-10 overflow-y-auto h-[90vh] max-h-[90vh] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
-            >
-              <div className="relative flex w-full px-4 text-center justify-center items-center">
-                <img
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsCheckOut(false);
-                  }}
-                  className="w-6 absolute left-6"
-                  src={back}
-                  alt=""
-                />
-                <p className="font-tomorrow font-bold text-h2-mobile lg:text-h2-desktop">
-                  PHEONIX
-                </p>
-              </div>
-              <div className="w-full mt-10 px-4 space-y-4">
-                <div className="border border-black w-full">
-                  {/* Order Summary Header */}
-                  <div
-                    className="h-fit w-full flex px-2 cursor-pointer items-center justify-between py-4"
-                    onClick={handleToggle}
-                  >
-                    <div className="flex gap-2 items-center">
-                      <img className="w-6" src={shooping} alt="Shopping" />
-                      <p className="font-roboto text-body-mobile lg:text-body-desktop">
-                        Order Summary
-                      </p>
+            <div className="fixed flex flex-col justify-between lg:w-1/3 w-full lg:left-[30%] bg-[#f3f4f9] py-10 mt-10 overflow-y-auto h-[90vh] max-h-[90vh] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+              <div>
+                <div className="relative flex w-full px-4 text-center justify-center items-center">
+                  <img
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsCheckOut(false);
+                      setDeliveryForm(false);
+                      setIsExpanded(false);
+                      setIsExpanded2(false);
+                    }}
+                    className="w-6 absolute cursor-pointer left-6"
+                    src={back}
+                    alt=""
+                  />
+                  <p className="font-tomorrow font-bold text-h2-mobile lg:text-h2-desktop">
+                    PHEONIX
+                  </p>
+                </div>
+                <div className="w-full mt-10 px-4 space-y-4">
+                  <div className=" bg-white w-full rounded-[10px]">
+                    {/* Order Summary Header */}
+                    <div
+                      className="h-fit w-full flex px-2 cursor-pointer items-center justify-between py-4"
+                      onClick={handleToggle}
+                    >
+                      <div className="flex gap-2 items-center">
+                        <img className="w-6" src={shooping} alt="Shopping" />
+                        <p className="font-roboto text-body-mobile lg:text-[16px]">
+                          Order Summary
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <img
+                          className={`w-4 transform transition-transform ${
+                            isExpanded ? "rotate-180" : "rotate-0"
+                          }`}
+                          src={dropdown}
+                          alt="Dropdown"
+                        />
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <img
-                        className={`w-4 transform transition-transform ${
-                          isExpanded ? "rotate-180" : "rotate-0"
-                        }`}
-                        src={dropdown}
-                        alt="Dropdown"
-                      />
-                    </div>
+
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          transition={{ duration: 0.5 }}
+                          className="px-4 py-4 border-black"
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <p>Order Summary</p>
+                            <p>
+                              {totalItems} items (₹{" "}
+                              {new Intl.NumberFormat("en-IN").format(
+                                calculateSubtotal()
+                              )}
+                              )
+                            </p>
+                          </div>
+
+                          {/* Scrollable Section */}
+                          <div className="flex flex-col gap-4 max-h-80 py-2 overflow-y-auto scrollbar-thin pr-2">
+                            {cartItems.map((item) => (
+                              <div key={item.id} className="flex">
+                                <div className="lg:w-[20%] w-[30%]">
+                                  <img
+                                    src={
+                                      item.image ||
+                                      item.image1 ||
+                                      item.imageUrls?.[0] ||
+                                      ""
+                                    }
+                                    alt={item.title}
+                                    className="w-full"
+                                  />
+                                </div>
+                                <div className="lg:w-[80%] w-[70%] px-4">
+                                  <p className="text-base font-semibold line-clamp-2">
+                                    {item.title}
+                                  </p>
+                                  <p className="text-sm text-gray-500 mt-1">
+                                    ₹{item.price}
+                                  </p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Total */}
+                          <div className="flex items-center lg:text-[24px] font-roboto justify-between mt-4">
+                            <p>Total</p>
+                            <p>
+                              ₹{" "}
+                              {new Intl.NumberFormat("en-IN").format(
+                                calculateSubtotal()
+                              )}
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
 
-                  {/* Expanded Content */}
-                  <AnimatePresence>
-                    {isExpanded && (
+                  <div className=" bg-white w-full rounded-[10px]">
+                    {/* Order Summary Header */}
+                    <div
+                      className="h-fit w-full flex px-2 cursor-pointer items-center justify-between py-4"
+                      onClick={handleToggle2}
+                    >
+                      <div className="flex gap-2 items-center">
+                        <img className="w-6" src={coupon} alt="Shopping" />
+                        <p className="font-roboto text-body-mobile lg:text-[16px]">
+                          Coupons/Gift Cards
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <p className="font-roboto text-body-mobile lg:text-[14px] text-[#004b94]">
+                          1 available
+                        </p>
+                        <img
+                          className={`w-4 transform transition-transform ${
+                            isExpanded2 ? "rotate-180" : "rotate-0"
+                          }`}
+                          src={dropdown}
+                          alt="Dropdown"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Expanded Content */}
+                    {isExpanded2 && (
                       <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
@@ -622,88 +770,114 @@ const Header = () => {
                         </ul>
                       </motion.div>
                     )}
-                  </AnimatePresence>
-                </div>
-
-                <div className="border border-black w-full">
-                  {/* Order Summary Header */}
-                  <div
-                    className="h-fit w-full flex px-2 cursor-pointer items-center justify-between py-4"
-                    onClick={handleToggle2}
-                  >
-                    <div className="flex gap-2 items-center">
-                      <img className="w-6" src={coupon} alt="Shopping" />
-                      <p className="font-roboto text-body-mobile lg:text-body-desktop">
-                        Coupons/Gift Cards
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <p className="font-roboto text-body-mobile lg:text-body-desktop">
-                        1 Available
-                      </p>
-                      <img
-                        className={`w-4 transform transition-transform ${
-                          isExpanded2 ? "rotate-180" : "rotate-0"
-                        }`}
-                        src={dropdown}
-                        alt="Dropdown"
-                      />
-                    </div>
                   </div>
-
-                  {/* Expanded Content */}
-                  {isExpanded2 && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className="px-4 py-4 border-black"
-                    >
-                      <p className="font-roboto text-body-mobile lg:text-body-desktop">
-                        Here’s some additional order information:
-                      </p>
-                      <ul className="list-disc pl-4">
-                        <li>Delivery Estimate: 3-5 business days</li>
-                        <li>Shipping Charges: Free</li>
-                        <li>Discount: ₹ 100</li>
-                      </ul>
-                    </motion.div>
-                  )}
                 </div>
-              </div>
 
-              <div className="mt-10 w-full h-fit px-4">
-                {userIsAuthenticated ? (
-                  <div className="border border-black px-2 py-4">
-                    <div className="flex items-center text-center w-full">
-                      <div className="w-1/2 flex items-center text-center gap-2">
-                        <img className="w-6" src={delivery} alt="" />
-                        <p className="font-roboto text-body-mobile lg:text-body-desktop">
-                          Deliver To
-                        </p>
+                <div className="mt-4 w-full h-fit px-4 ">
+                  {userIsAuthenticated ? (
+                    <div className=" px-4 py-4 bg-white rounded-[10px]">
+                      <div className="flex items-center text-center w-full">
+                        <div className="w-1/2 flex items-center text-center gap-2">
+                          <img className="w-6" src={delivery} alt="" />
+                          <p className="font-roboto text-body-mobile lg:text-[16px]">
+                            Deliver To
+                          </p>
+                        </div>
+                        <div className="w-1/2 flex justify-end">
+                          {savedAddress.length > 0 && (
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setPinCodeForm(true);
+                              }}
+                              className="flex items-center gap-1 border bg-[#eff5ff] px-2 py-2"
+                            >
+                              {/* <img className="w-4" src={plus} alt="" /> */}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={2.5}
+                                stroke="#1773b0"
+                                className="size-3"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M12 4.5v15m7.5-7.5h-15"
+                                />
+                              </svg>
+
+                              <p className="text-subtext-mobile lg:text-[12px] font-medium text-[#1773b0]">
+                                Add New Address
+                              </p>
+                            </button>
+                          )}
+                        </div>
                       </div>
-                      <div className="w-1/2 flex justify-end">
-                        {savedAddress.length > 0 && (
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setPinCodeForm(true);
-                            }}
-                            className="flex items-center gap-2 border bg-black bg-opacity-[19%] px-2 py-2"
-                          >
-                            <img className="w-4" src={plus} alt="" />
-                            <p className="text-subtext-mobile lg:text-subtext-desktop">
-                              Add New Address
-                            </p>
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                    {/* Pin Code */}
-                    <div className="relative">
-                      <div className={`${pinCodeForm ? "relative z-50" : ""}`}>
+                      {/* Pin Code */}
+                      <div className="relative">
                         {pinCodeForm && (
-                          <div className="fixed z-50 left-0 lg:left-[30%] w-full lg:w-1/3 bg-white border rounded-t-[10px] py-4 px-2 bottom-0">
+                          <div className="fixed inset-0 bg-black bg-opacity-40 z-40"></div>
+                        )}
+                        <div
+                          className={`${pinCodeForm ? "relative z-50" : ""}`}
+                        >
+                          {pinCodeForm && (
+                            <div className="fixed z-50 left-0 lg:left-[30%] w-full lg:w-1/3 bg-white border rounded-t-[10px] py-4 px-2 bottom-10">
+                              <div className="flex">
+                                <div className="w-1/2">
+                                  <p className="font-roboto text-body-mobile lg:text-body-desktop">
+                                    Add New Address
+                                  </p>
+                                </div>
+                                <div className="w-1/2 flex justify-end">
+                                  <img
+                                    className="w-6 cursor-pointer"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setPinCodeForm(false);
+                                    }}
+                                    src={close}
+                                    alt=""
+                                  />
+                                </div>
+                              </div>
+                              <div className="mt-4">
+                                <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
+                                  Pincode*
+                                </p>
+                                <input
+                                  type="text"
+                                  className="w-full border border-black placeholder:font-roboto placeholder:text-subtext-mobile lg:placeholder:text-subtext-desktop placeholder:text-black placeholder:text-opacity-60 px-2 py-4 mt-2"
+                                  placeholder="Pincode"
+                                  value={pinCode}
+                                  onChange={(e) => {
+                                    setPinCode(e.target.value);
+                                  }}
+                                />
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    localStorage.setItem("pincode", pinCode);
+                                    setPinCode("");
+                                    setSavedPinCode(pinCode);
+                                    setDeliveryForm(true);
+                                    setPinCodeForm(false);
+                                  }}
+                                  className="mt-4 py-2 w-full bg-black text-white font-rubik text-body-mobile lg:text-body-desktop"
+                                >
+                                  Save Address
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {deliveryForm && (
+                        <div className="mt-4">
+                          <div className="lg:left-[30%] left-0 w-full bottom-0 z-50 border border-black bg-white py-4 px-2">
                             <div className="flex">
                               <div className="w-1/2">
                                 <p className="font-roboto text-body-mobile lg:text-body-desktop">
@@ -712,281 +886,242 @@ const Header = () => {
                               </div>
                               <div className="w-1/2 flex justify-end">
                                 <img
-                                  className="w-6 cursor-pointer"
+                                  className="w-6 h-6 cursor-pointer"
                                   onClick={(e) => {
                                     e.preventDefault();
-                                    setPinCodeForm(false);
+                                    setDeliveryForm(false);
                                   }}
                                   src={close}
                                   alt=""
                                 />
                               </div>
                             </div>
-                            <div className="mt-4">
-                              <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
-                                Pincode*
-                              </p>
-                              <input
-                                type="text"
-                                className="w-full border border-black placeholder:font-roboto placeholder:text-subtext-mobile lg:placeholder:text-subtext-desktop placeholder:text-black placeholder:text-opacity-60 px-2 py-4 mt-2"
-                                placeholder="Pincode"
-                                value={pinCode}
-                                onChange={(e) => {
-                                  setPinCode(e.target.value);
-                                }}
-                              />
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  localStorage.setItem("pincode", pinCode);
-                                  setPinCode("");
-                                  setSavedPinCode(pinCode);
-                                  setDeliveryForm(true);
-                                  setPinCodeForm(false);
-                                }}
-                                className="mt-4 py-2 w-full bg-black text-white font-rubik text-body-mobile lg:text-body-desktop"
-                              >
-                                Save Address
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {deliveryForm && (
-                      <div className="">
-                        <div className="lg:left-[30%] left-0 w-full bottom-0 z-50 border border-black bg-white py-4 px-2">
-                          <div className="flex">
-                            <div className="w-1/2">
-                              <p className="font-roboto text-body-mobile lg:text-body-desktop">
-                                Add New Address
-                              </p>
-                            </div>
-                            <div className="w-1/2 flex justify-end">
-                              <img
-                                className="w-6 h-6 cursor-pointer"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setDeliveryForm(false);
-                                }}
-                                src={close}
-                                alt=""
-                              />
-                            </div>
-                          </div>
-                          <div className="px-2 mt-4">
-                            <form action="">
-                              <div className="flex items-center w-full gap-2">
-                                <div className="w-2/5 flex">
-                                  <p className="font-roboto text-auth-border text-subtext-mobile lg:text-subtext-desktop">
-                                    Address
-                                  </p>
+                            <div className="px-2 mt-4">
+                              <form action="">
+                                <div className="flex items-center w-full gap-2">
+                                  <div className="w-2/5 flex">
+                                    <p className="font-roboto text-auth-border text-subtext-mobile lg:text-subtext-desktop">
+                                      Address
+                                    </p>
+                                  </div>
+                                  <div className="w-4/5">
+                                    <hr className="border-t border-auth-border" />
+                                  </div>
                                 </div>
-                                <div className="w-4/5">
-                                  <hr className="border-t border-auth-border" />
-                                </div>
-                              </div>
-                              <div className="px-2 mt-4">
-                                <label className="space-y-2">
-                                  <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
-                                    Pincode*
-                                  </p>
-                                  <input
-                                    className="border border-black w-full placeholder:text-[10px] placeholder:text-auth-border px-2 py-2"
-                                    type="text"
-                                    value={savedPinCode}
-                                    readOnly
-                                    placeholder="Pincode"
-                                  />
-                                </label>
-                                <div className="flex gap-4 mt-4">
-                                  <label className="space-y-2 w-1/2">
+                                <div className="px-2 mt-4">
+                                  <label className="space-y-2">
                                     <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
-                                      City*
+                                      Pincode*
                                     </p>
                                     <input
                                       className="border border-black w-full placeholder:text-[10px] placeholder:text-auth-border px-2 py-2"
                                       type="text"
-                                      value={city}
-                                      required
-                                      onChange={(e) => setCity(e.target.value)}
+                                      value={savedPinCode}
+                                      readOnly
+                                      placeholder="Pincode"
                                     />
                                   </label>
-                                  <label className="space-y-2 w-1/2">
-                                    <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
-                                      State*
-                                    </p>
-                                    <input
-                                      className="border border-black w-full lg:placeholder:text-subtext-desktop placeholder:text-subtext-mobile placeholder:text-auth-border px-2 py-2"
-                                      type="text"
-                                      value={state}
-                                      required
-                                      onChange={(e) => setState(e.target.value)}
-                                    />
-                                  </label>
+                                  <div className="flex gap-4 mt-4">
+                                    <label className="space-y-2 w-1/2">
+                                      <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
+                                        City*
+                                      </p>
+                                      <input
+                                        className="border border-black w-full placeholder:text-[10px] placeholder:text-auth-border px-2 py-2"
+                                        type="text"
+                                        value={city}
+                                        required
+                                        onChange={(e) =>
+                                          setCity(e.target.value)
+                                        }
+                                      />
+                                    </label>
+                                    <label className="space-y-2 w-1/2">
+                                      <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
+                                        State*
+                                      </p>
+                                      <input
+                                        className="border border-black w-full lg:placeholder:text-subtext-desktop placeholder:text-subtext-mobile placeholder:text-auth-border px-2 py-2"
+                                        type="text"
+                                        value={state}
+                                        required
+                                        onChange={(e) =>
+                                          setState(e.target.value)
+                                        }
+                                      />
+                                    </label>
+                                  </div>
+                                  <div className="mt-4 relative">
+                                    <label className="space-y-2">
+                                      <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
+                                        Full Address*
+                                      </p>
+                                      <textarea
+                                        className="text-subtext-mobile lg:text-subtext-desktop border h-28 border-black w-full lg:placeholder:text-subtext-desktop placeholder:text-subtext-mobile placeholder:text-auth-border px-2 py-2"
+                                        type="text"
+                                        placeholder="Your Address"
+                                        value={address}
+                                        required
+                                        onChange={(e) =>
+                                          setAddress(e.target.value)
+                                        }
+                                      />
+                                    </label>
+                                  </div>
                                 </div>
-                                <div className="mt-4 relative">
+                                <div className="flex items-center w-full mt-4 gap-2">
+                                  <div className="w-2/5 flex">
+                                    <p className="font-roboto text-auth-border text-subtext-mobile lg:text-subtext-desktop">
+                                      Personal Details
+                                    </p>
+                                  </div>
+                                  <div className="w-4/5">
+                                    <hr className="border-t border-auth-border" />
+                                  </div>
+                                </div>
+                                <div className="mt-4 px-2">
                                   <label className="space-y-2">
                                     <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
-                                      Full Address*
+                                      Email*
                                     </p>
-                                    <textarea
-                                      className="text-subtext-mobile lg:text-subtext-desktop border h-28 border-black w-full lg:placeholder:text-subtext-desktop placeholder:text-subtext-mobile placeholder:text-auth-border px-2 py-2"
+                                    <input
+                                      className="border border-black w-full placeholder:text-[10px] placeholder:text-auth-border px-2 py-2"
                                       type="text"
-                                      placeholder="Your Address"
-                                      value={address}
+                                      placeholder="Email"
+                                      value={email}
                                       required
-                                      onChange={(e) => setAddress(e.target.value)}
+                                      onChange={(e) => setEmail(e.target.value)}
                                     />
                                   </label>
                                 </div>
-                              </div>
-                              <div className="flex items-center w-full mt-4 gap-2">
-                                <div className="w-2/5 flex">
-                                  <p className="font-roboto text-auth-border text-subtext-mobile lg:text-subtext-desktop">
-                                    Personal Details
-                                  </p>
+                                <div className="mt-4 px-2">
+                                  <label className="space-y-2">
+                                    <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
+                                      Full Name*
+                                    </p>
+                                    <input
+                                      className="border border-black w-full placeholder:text-[10px] placeholder:text-auth-border px-2 py-2"
+                                      type="text"
+                                      placeholder="Full Name"
+                                      value={fullName}
+                                      required
+                                      onChange={(e) =>
+                                        setFullName(e.target.value)
+                                      }
+                                    />
+                                  </label>
                                 </div>
-                                <div className="w-4/5">
-                                  <hr className="border-t border-auth-border" />
+                                <div className="mt-4 px-2">
+                                  <label className="space-y-2">
+                                    <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
+                                      Phone Number*
+                                    </p>
+                                    <input
+                                      className="border border-black w-full placeholder:text-[10px] placeholder:text-auth-border px-2 py-2"
+                                      type="text"
+                                      placeholder="Phone Number"
+                                      value={phoneNumber}
+                                      required
+                                      onChange={(e) =>
+                                        setPhoneNumber(e.target.value)
+                                      }
+                                    />
+                                  </label>
                                 </div>
-                              </div>
-                              <div className="mt-4 px-2">
-                                <label className="space-y-2">
-                                  <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
-                                    Email*
-                                  </p>
-                                  <input
-                                    className="border border-black w-full placeholder:text-[10px] placeholder:text-auth-border px-2 py-2"
-                                    type="text"
-                                    placeholder="Email"
-                                    value={email}
-                                    required
-                                    onChange={(e) => setEmail(e.target.value)}
-                                  />
-                                </label>
-                              </div>
-                              <div className="mt-4 px-2">
-                                <label className="space-y-2">
-                                  <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
-                                    Full Name*
-                                  </p>
-                                  <input
-                                    className="border border-black w-full placeholder:text-[10px] placeholder:text-auth-border px-2 py-2"
-                                    type="text"
-                                    placeholder="Full Name"
-                                    value={fullName}
-                                    required
-                                    onChange={(e) => setFullName(e.target.value)}
-                                  />
-                                </label>
-                              </div>
-                              <div className="mt-4 px-2">
-                                <label className="space-y-2">
-                                  <p className="font-roboto text-subtext-mobile lg:text-subtext-desktop">
-                                    Phone Number*
-                                  </p>
-                                  <input
-                                    className="border border-black w-full placeholder:text-[10px] placeholder:text-auth-border px-2 py-2"
-                                    type="text"
-                                    placeholder="Phone Number"
-                                    value={phoneNumber}
-                                    required
-                                    onChange={(e) => setPhoneNumber(e.target.value)}
-                                  />
-                                </label>
-                              </div>
-                              <div className="mt-4 px-2">
-                                <button
-                                  onClick={() => {
-                                    handleAddressSave();
-                                  }}
-                                  className="w-full bg-black py-2 text-white"
-                                >
-                                  Save Address
-                                </button>
-                              </div>
-                            </form>
+                                <div className="mt-4 px-2">
+                                  <button
+                                    onClick={() => {
+                                      handleAddressSave();
+                                    }}
+                                    className="w-full bg-black py-2 text-white"
+                                  >
+                                    Save Address
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
                           </div>
                         </div>
+                      )}
+                      <div className="mt-2 space-y-2">
+                        {savedAddress.length === 0 ? (
+                          <div>
+                            <p>No Address Available</p>
+                          </div>
+                        ) : (
+                          savedAddress.map((addressData, index) => (
+                            <div
+                              key={index}
+                              onClick={() => setSelectedAddress(addressData)}
+                              className={`border mt-6 font-roboto text-subtext-mobile lg:text-subtext-desktop py-2 cursor-pointer rounded-[10px] ${
+                                selectedAddress === addressData
+                                  ? "border-2 border-black"
+                                  : "border-[#b8b8b8]"
+                              }`}
+                            >
+                              <div className="w-full px-2 flex items-center">
+                                <div className="w-1/2">
+                                  <p>{addressData.fullName}</p>
+                                </div>
+                                <div className="w-1/2 flex justify-end">
+                                  <button
+                                    onClick={() => handleDeleteAddress(index)}
+                                    className="px-4 py-1 text-[#004b94] font-roboto "
+                                  >
+                                    Edit
+                                  </button>
+                                </div>
+                              </div>
+                              <div className="px-2 w-[80%] mt-2">
+                                <p className="font-light">
+                                  {addressData.address}, {addressData.city},{" "}
+                                  {addressData.state}, {savedPinCode}
+                                </p>
+                              </div>
+                              <div className="w-full px-2 mt-2 flex items-center text-black text-opacity-50">
+                                <div className="w-1/2">
+                                  <p>{addressData.email}</p>
+                                </div>
+                                <div className="w-1/2 flex justify-end">
+                                  <p>({addressData.phoneNumber})</p>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        )}
                       </div>
-                    )}
-                    <div className="mt-2 space-y-2">
-                      {savedAddress.length === 0 ? (
-                        <div>
-                          <p>No Address Available</p>
+                      {savedAddress.length === 0 && (
+                        <div
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setPinCodeForm(true);
+                          }}
+                          className="w-full h-10 border flex items-center text-center gap-2 py-6 px-2 mt-2 border-black cursor-pointer"
+                        >
+                          <img className="w-6" src={add} alt="" />
+                          <p className="font-roboto text-body-mobile lg:text-body-desktop">
+                            Add New Address
+                          </p>
                         </div>
-                      ) : (
-                        savedAddress.map((addressData, index) => (
-                          <div
-                            key={index}
-                            onClick={() => setSelectedAddress(addressData)}
-                            className={`border font-roboto text-subtext-mobile lg:text-subtext-desktop py-2 cursor-pointer ${
-                              selectedAddress === addressData
-                                ? "border-2 border-black"
-                                : "border-black"
-                            }`}
-                          >
-                            <div className="w-full px-2 flex items-center">
-                              <div className="w-1/2">
-                                <p>{addressData.fullName}</p>
-                              </div>
-                              <div className="w-1/2 flex justify-end">
-                                <button
-                                  onClick={() => handleDeleteAddress(index)}
-                                  className="px-4 py-1 text-black font-roboto border border-black"
-                                >
-                                  Delete
-                                </button>
-                              </div>
-                            </div>
-                            <div className="px-2 w-2/3 mt-2">
-                              <p>
-                                {addressData.address}, {addressData.city}, {addressData.state}, {savedPinCode}
-                              </p>
-                            </div>
-                            <div className="w-full px-2 flex items-center text-black text-opacity-50">
-                              <div className="w-1/2">
-                                <p>{addressData.email}</p>
-                              </div>
-                              <div className="w-1/2 flex justify-end">
-                                <p>({addressData.phoneNumber})</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))
                       )}
                     </div>
-                    {savedAddress.length === 0 && (
-                      <div
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setPinCodeForm(true);
-                        }}
-                        className="w-full h-10 border flex items-center text-center gap-2 py-6 px-2 mt-2 border-black cursor-pointer"
-                      >
-                        <img className="w-6" src={add} alt="" />
-                        <p className="font-roboto text-body-mobile lg:text-body-desktop">
-                          Add New Address
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div>
-                    <button>
-                      <Link to="/login">
-                        <p>You have to login first</p>
-                      </Link>
-                    </button>
-                  </div>
-                )}
+                  ) : (
+                    <div>
+                      <button>
+                        <Link to="/login">
+                          <p>You have to login first</p>
+                        </Link>
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="w-full mt-4 z-20 px-4">
+              <div className="w-full  mt-4  px-4 ">
                 <button
                   className={`w-full text-white font-rubik py-2 ${
-                    selectedAddress ? "bg-black cursor-pointer" : "bg-gray-400 cursor-not-allowed"
+                    selectedAddress
+                      ? "bg-black cursor-pointer"
+                      : "bg-gray-400 cursor-not-allowed"
                   }`}
                   disabled={!selectedAddress}
                   onClick={() => navigate("/payment")}
@@ -1808,152 +1943,149 @@ const Header = () => {
 
       <div className="hidden lg:block  w-full z-10">
         {/* ---------------------------------DIV 1-------------------------------------------- */}
-      <div className=" bg-home-bg w-full h-fit text-center py-1">
-        <p className="font-rubik font-medium text-subtext-mobile lg:text-[14px]">
-          ❤️SHOP NOW AND GET 10% OFF - USE CODE (FIRSTBUY)
-        </p>
-      </div>
-
-     
-      {/* ---------------------------------DIV 2-------------------------------------------- */}
-      <div className="w-full h-fit lg:flex items-center bg-home-bg-black ">
-        {/* ===========Div 2-1 ============ */}
-        <div className="hidden w-2/5  text-white font-rubik lg:flex lg:pl-16  items-center gap-8 text-[16px]">
-          <div
-            onClick={(e) => {
-              e.preventDefault();
-              setIsShopByOpen((prev) => !prev);
-              if (!isShopByOpen) {
-                setIsCollectionOpen(false);
-              }
-            }}
-            className={`py-4 f-full flex items-center space-x-1 ${
-              isShopByOpen ? "border-b-4 border-home-bg" : ""
-            }`}
-          >
-            <a href="">Shop By</a>{" "}
-            <a href="">
-              <img className="w-3 h-2" src={down} alt="" />
-            </a>
-          </div>
-          <div
-            className={`py-4 f-full flex items-center space-x-1
-            ${isCollectionOpen ? "border-b-4 border-home-bg" : ""}`}
-            onClick={(e) => {
-              e.preventDefault();
-              setIsCollectionOpen((prev) => !prev);
-              if (!isCollectionOpen) {
-                setIsShopByOpen(false);
-              }
-            }}
-          >
-            <a href="">Collections</a>{" "}
-            <a href="">
-              <img className="w-3 h-2" src={down} alt="" />
-            </a>
-          </div>
-          <div className={`py-4 f-full`}>
-            <p>
-              <Link to="/track-order">Track Order</Link>
-            </p>
-          </div>
-          <div className=" py-4 f-full  ">
-            <Link to="/faqs">FAQs</Link>
-          </div>
-          <div className="py-4 f-full   ">
-            <a href="">Contact Us</a>
-          </div>
+        <div className=" bg-home-bg w-full h-fit text-center py-1">
+          <p className="font-rubik font-medium text-subtext-mobile lg:text-[14px]">
+            ❤️SHOP NOW AND GET 10% OFF - USE CODE (FIRSTBUY)
+          </p>
         </div>
 
-        {/* ===========Div 2-2 ============ */}
-        <div className="w-1/5  flex justify-center items-center ">
-          <Link to="/">
-            <p className="font-tomorrow font-bold text-white text-[22px] py-4 uppercase">
-              Phoenix
-            </p>
-          </Link>
-        </div>
-        {/* ===========Div 2-3 ============ */}
-        <div className="w-2/5   text-white pr-32 py-4  font-rubik ">
-          <nav className="flex justify-end gap-8 ">
-            <a
+        {/* ---------------------------------DIV 2-------------------------------------------- */}
+        <div className="w-full h-fit lg:flex items-center bg-home-bg-black ">
+          {/* ===========Div 2-1 ============ */}
+          <div className="hidden w-2/5  text-white font-rubik lg:flex lg:pl-16  items-center gap-8 text-[16px]">
+            <div
               onClick={(e) => {
                 e.preventDefault();
-                setIsSearchOpen(true);
-                if (!isSearchOpen) {
+                setIsShopByOpen((prev) => !prev);
+                if (!isShopByOpen) {
                   setIsCollectionOpen(false);
-                  setIsShopBy(false);
                 }
               }}
-              href=""
+              className={`py-4 f-full flex items-center space-x-1 ${
+                isShopByOpen ? "border-b-4 border-home-bg" : ""
+              }`}
             >
-              <img className="w-6" src={search} alt="" />
-            </a>
-            <a href="">
-              <img className="w-6" src={user} alt="" />
-            </a>
-            <button
+              <a href="">Shop By</a>{" "}
+              <a href="">
+                <img className="w-3 h-2" src={down} alt="" />
+              </a>
+            </div>
+            <div
+              className={`py-4 f-full flex items-center space-x-1
+            ${isCollectionOpen ? "border-b-4 border-home-bg" : ""}`}
               onClick={(e) => {
                 e.preventDefault();
-                setIsCartOpen(true);
+                setIsCollectionOpen((prev) => !prev);
+                if (!isCollectionOpen) {
+                  setIsShopByOpen(false);
+                }
               }}
-              className="relative"
             >
-              <img className="w-6" src={cart} alt="Cart" />
+              <a href="">Collections</a>{" "}
+              <a href="">
+                <img className="w-3 h-2" src={down} alt="" />
+              </a>
+            </div>
+            <div className={`py-4 f-full`}>
+              <p>
+                <Link to="/track-order">Track Order</Link>
+              </p>
+            </div>
+            <div className=" py-4 f-full  ">
+              <Link to="/faqs">FAQs</Link>
+            </div>
+            <div className="py-4 f-full   ">
+              <a href="">Contact Us</a>
+            </div>
+          </div>
 
-              {cartItems.length > 0 && (
-                <span className="absolute -top-3 bg-red-500 px-2 py-0 -right-4 text-white text-[10px] font-bold rounded-full lg:text-[16px]">
-                  {cartItems.length}
-                </span>
-              )}
-            </button>
+          {/* ===========Div 2-2 ============ */}
+          <div className="w-1/5  flex justify-center items-center ">
+            <Link to="/">
+              <p className="font-tomorrow font-bold text-white text-[22px] py-4 uppercase">
+                Phoenix
+              </p>
+            </Link>
+          </div>
+          {/* ===========Div 2-3 ============ */}
+          <div className="w-2/5   text-white pr-32 py-4  font-rubik ">
+            <nav className="flex justify-end gap-8 ">
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsSearchOpen(true);
+                  if (!isSearchOpen) {
+                    setIsCollectionOpen(false);
+                    setIsShopBy(false);
+                  }
+                }}
+                href=""
+              >
+                <img className="w-6" src={search} alt="" />
+              </a>
+              <a href="">
+                <img className="w-6" src={user} alt="" />
+              </a>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsCartOpen(true);
+                }}
+                className="relative"
+              >
+                <img className="w-6" src={cart} alt="Cart" />
 
-            {/* <Cart 
+                {cartItems.length > 0 && (
+                  <span className="absolute -top-3 bg-red-500 px-2 py-0 -right-4 text-white text-[10px] font-bold rounded-full lg:text-[16px]">
+                    {cartItems.length}
+                  </span>
+                )}
+              </button>
+
+              {/* <Cart 
             isCartOpen={isCartOpen}
             setIsCartOpen={setIsCartOpen}
             /> */}
-          </nav>
+            </nav>
+          </div>
         </div>
       </div>
-       </div>
       {/* For Mobile */}
       <div className="lg:hidden">
-
-      
-      <div className=" bg-home-bg w-full h-fit text-center py-1">
-        <p className="font-rubik font-medium text-subtext-mobile lg:text-[14px]">
-          ❤️SHOP NOW AND GET 10% OFF - USE CODE (FIRSTBUY)
-        </p>
-      </div>
-      <div className="w-full flex  justify-center items-center  h-fit bg-home-bg-black ">
-        <div className="w-3/5  pl-4  py-4 ">
-          <a href="">
-            <img
-              onClick={(e) => {
-                e.preventDefault();
-                setIsMenuOpen(true);
-              }}
-              className="w-6"
-              src={menu}
-              alt=""
-            />
-          </a>
+        <div className=" bg-home-bg w-full h-fit text-center py-1">
+          <p className="font-rubik font-medium text-subtext-mobile lg:text-[14px]">
+            ❤️SHOP NOW AND GET 10% OFF - USE CODE (FIRSTBUY)
+          </p>
         </div>
-        <div className="w-3/5  py-4 ">
-          <Link to="/">
-            <p className="font-tomorrow font-bold text-white text-h2-mobile text-center uppercase">
-              Phoenix
-            </p>
-          </Link>
-        </div>
-        <div className="w-3/5 pr-4  flex justify-end items-center gap-4 py-4">
-          <a href="">
-            <img className="w-6 h-6" src={search} alt="" />
-          </a>
-          {/* <a href="">
+        <div className="w-full flex  justify-center items-center  h-fit bg-home-bg-black ">
+          <div className="w-3/5  pl-4  py-4 ">
+            <a href="">
+              <img
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMenuOpen(true);
+                }}
+                className="w-6"
+                src={menu}
+                alt=""
+              />
+            </a>
+          </div>
+          <div className="w-3/5  py-4 ">
+            <Link to="/">
+              <p className="font-tomorrow font-bold text-white text-h2-mobile text-center uppercase">
+                Phoenix
+              </p>
+            </Link>
+          </div>
+          <div className="w-3/5 pr-4  flex justify-end items-center gap-4 py-4">
+            <a href="">
+              <img className="w-6 h-6" src={search} alt="" />
+            </a>
+            {/* <a href="">
             <img className="w-6 h-6" src={user} alt="" />
           </a> */}
-          {/* <button
+            {/* <button
             onClick={(e) => {
               e.preventDefault();
               setIsCartOpen(true);
@@ -1962,7 +2094,7 @@ const Header = () => {
           >
             <img className="w-6 h-6" src={cart} alt="" />
           </button> */}
-          <button
+            <button
               onClick={(e) => {
                 e.preventDefault();
                 setIsCartOpen(true);
@@ -1977,8 +2109,8 @@ const Header = () => {
                 </span>
               )}
             </button>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );
