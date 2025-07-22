@@ -111,7 +111,7 @@ const NewArrivals = () => {
                   className="flex flex-col justify-between w-full border-2 h-full py-2 pb-4 hover:shadow-lg transition-shadow duration-300"
                 >
                   {/* Tag */}
-                  <div className="w-fit h-fit px-2 py-1 border text-center bg-discount-bg text-white lg:text-[10px] font-rubik ml-2">
+                  <div className="w-fit h-fit mb-4 px-2 py-1 border text-center bg-discount-bg text-white lg:text-[12px] font-rubik ml-2">
                     <p>- 50% Off</p>
                   </div>
 

@@ -359,7 +359,7 @@ const ProductDetail = () => {
       <Header />
 
       {/* -----------------------Product Image Section--------------------------- */}
-      <div className="w-full px-8 lg:px-32 h-fit lg:flex mt-0 lg:mt-16">
+      <div className="w-full px-8 lg:px-0 h-fit lg:flex mt-0 lg:mt-16">
         <div className="w-full lg:w-1/2 h-full mt-4">
           <div className="h-[400px]">
             <img
