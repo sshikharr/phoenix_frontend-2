@@ -108,10 +108,10 @@ const NewArrivals = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1 }}
                   viewport={{ once: true }}
-                  className="flex flex-col justify-between w-full border-2 h-full py-4 pb-4 hover:shadow-lg transition-shadow duration-300"
+                  className="flex flex-col justify-between w-full border-2 h-full py-2 pb-4 hover:shadow-lg transition-shadow duration-300"
                 >
                   {/* Tag */}
-                  <div className="w-fit h-fit px-4 border bg-discount-bg text-white font-rubik ml-4">
+                  <div className="w-fit h-fit px-2 py-1 border text-center bg-discount-bg text-white lg:text-[10px] font-rubik ml-2">
                     <p>- 50% Off</p>
                   </div>
 
