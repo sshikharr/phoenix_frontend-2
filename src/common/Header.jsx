@@ -876,7 +876,7 @@ const Header = () => {
                                 <div>
                                   <button
                                   onClick={handleApplyDiscount}
-                                  className="text-[#004b94] w-full py-2 bg-blue-50 font-rubik text-[16px] font-medium">
+                                  className="text-[#004b94] w-full py-2 bg-blue-50 font-rubik text-[16px] font-medium rounded-bl-[10px]">
                                     Tap to Apply
                                   </button>
                                 </div>
