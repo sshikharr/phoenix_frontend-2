@@ -2023,7 +2023,7 @@ const Header = () => {
               >
                 <img className="w-6" src={search} alt="" />
               </a>
-              <a href="">
+              <a href={userIsAuthenticated ? "/profile" : "/login"}>
                 <img className="w-6" src={user} alt="" />
               </a>
               <button
@@ -2082,9 +2082,9 @@ const Header = () => {
             <a href="">
               <img className="w-6 h-6" src={search} alt="" />
             </a>
-            {/* <a href="">
+            <a href={userIsAuthenticated ? "/profile" : "/login"}>
             <img className="w-6 h-6" src={user} alt="" />
-          </a> */}
+          </a>
             {/* <button
             onClick={(e) => {
               e.preventDefault();
