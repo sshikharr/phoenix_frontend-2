@@ -92,10 +92,7 @@ const Profile = () => {
 
         {/* Main Content */}
         <div className="flex-1 px-4 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="lg:text-h1-desktop text-h1-mobile font-bold font-tomorrow text-center mb-8">
-              Profile
-            </h2>
+          <div className="max-w-4xl mx-auto lg:mt-16 mt-8">
 
             {/* Error and Success Messages */}
             {error && (
