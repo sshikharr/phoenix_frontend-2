@@ -444,7 +444,7 @@ const Header = () => {
       <div>
         {isCartOpen && (
           <div className="fixed inset-0 z-20 bg-black bg-opacity-50">
-            <div className="w-full  h-screen bg-white lg:w-1/3 fixed lg:right-0 lg:left-auto p-4 lg:p-6">
+            <div className="w-full h-full bg-white lg:w-1/3 fixed lg:right-0 lg:left-auto p-4 lg:p-6">
               <div className="flex justify-between items-center">
                 <p className="font-roboto font-semibold lg:text-[24px] text-[20px]">
                   Shopping Cart
