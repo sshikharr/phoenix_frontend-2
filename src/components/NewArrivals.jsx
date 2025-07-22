@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { motion } from "framer-motion";
 import { CartContext } from "../context/CartContext";
-import stars from "../assets/Group 628218.png"
+import stars from "../assets/Group 628218.png";
 import { Link } from "react-router-dom";
 
 const NewArrivals = () => {
@@ -45,7 +45,7 @@ const NewArrivals = () => {
     addToCart(collection);
     setToastMessage(`${collection.title} added to cart!`);
     setShowToast(true);
-    
+
     // Hide toast after 3 seconds
     setTimeout(() => {
       setShowToast(false);
@@ -101,73 +101,77 @@ const NewArrivals = () => {
           ) : (
             collections.map((collection, index) => (
               <SwiperSlide key={index}>
-               {/* <Link to={`/product/${collection.id}`}> */}
-               <Link to="product-detail">
-                 <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1 }}
-                  viewport={{ once: true }}
-                  className="flex flex-col justify-between w-full border-2 h-full py-2 pb-4 hover:shadow-lg transition-shadow duration-300"
-                >
-                  {/* Tag */}
-                  <div className="w-fit h-fit mb-4 px-2 py-1 border text-center bg-discount-bg text-white lg:text-[12px] font-rubik ml-2">
-                    <p>- 50% Off</p>
-                  </div>
-
-                  {/* Product Image */}
-                  <div className="flex justify-center">
-                    <img
-                      className="h-[250px] lg:h-[300px] object-contain transition-transform duration-300 hover:scale-105"
-                      src={
-                        collection.imageUrls?.[0] ||
-                        "https://via.placeholder.com/300"
-                      }
-                      alt={collection.title}
-                    />
-                  </div>
-
-                  {/* Details */}
-                  <div className="flex flex-col mx-4 text-left pr-10 mt-2 lg:mt-2 font-rubik font-medium">
-                    
-                    <p className="text-body-mobile lg:text-body-desktop">
-                      {collection.title}
-                    </p>
-                    <p className="text-body-mobile lg:text-subtext-desktop font-light text-[#282929]">
-                      {collection.description}
-                    </p>
-
-                    {/* Rating */}
-                    <div className="mt-1 lg:mt-2 flex items-center gap-4">
-                      <img className="w-24 h-4" src={stars} alt="" />
-                      <p className="text-[#808080] font-light">2000</p>
+                {/* <Link to={`/product/${collection.id}`}> */}
+                <Link to="product-detail">
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
+                    viewport={{ once: true }}
+                    className="flex flex-col justify-between w-full border-2 h-full py-2 pb-4 hover:shadow-lg transition-shadow duration-300"
+                  >
+                    {/* Tag */}
+                    <div className="w-fit h-fit mb-4 px-2 py-1 border text-center bg-discount-bg text-white lg:text-[12px] font-rubik ml-2">
+                      <p>- 50% Off</p>
                     </div>
 
-                    {/* Price */}
-                    <div className="mt-1 lg:mt-2 mb-2 space-x-4">
-                      <p className="space-x-2">
-                        <span className="text-h4-mobile lg:text-h4-desktop font-medium text-black">
-                          ₹{collection.actualprice || "499"}
-                        </span>
-                        <span className="line-through font-light  text-body-mobile lg:text-body-mobile   text-[#282929]">
-                          ₹{collection.price || "999"}
-                        </span>
+                    {/* Product Image */}
+                    <div className="flex justify-center">
+                      <img
+                        className="h-[250px] lg:h-[300px] object-contain transition-transform duration-300 hover:scale-105"
+                        src={
+                          collection.imageUrls?.[0] ||
+                          "https://via.placeholder.com/300"
+                        }
+                        alt={collection.title}
+                      />
+                    </div>
+
+                    {/* Details */}
+                    <div className="flex flex-col mx-4 text-left pr-10 mt-2 lg:mt-2 font-rubik font-medium">
+                      <p className="text-body-mobile lg:text-body-desktop line-clamp-2">
+                        {collection.title} 
                       </p>
-                    </div>
-                  </div>
+                      {/* <p className="text-body-mobile lg:text-body-desktop">
+                        {collection.title.split(" ").slice(0, 7).join(" ") +
+                          (collection.title.split(" ").length > 7 ? "..." : "")}
+                      </p> */}
 
-                  {/* Add to Cart - Fixed at bottom */}
-                  <div className="mt-auto flex border-2 border-home-bg-black w-fit mx-auto px-16 lg:px-8 py-2 lg:py-2 text-home-bg-black font-medium hover:bg-home-bg-black hover:text-white transition-all duration-300 cursor-pointer">
-                    <button onClick={() => handleAddToCart(collection)}>ADD TO CART</button>
-                  </div>
-                </motion.div>
-               </Link>
+                      
+
+                      {/* Rating */}
+                      <div className="mt-1 lg:mt-2 flex items-center gap-4">
+                        <img className="w-24 h-4" src={stars} alt="" />
+                        <p className="text-[#808080] font-light">2000</p>
+                      </div>
+
+                      {/* Price */}
+                      <div className="mt-1 lg:mt-2 mb-2 space-x-4">
+                        <p className="space-x-2">
+                          <span className="text-h4-mobile lg:text-h4-desktop font-medium text-black">
+                            ₹{collection.actualprice || "499"}
+                          </span>
+                          <span className="line-through font-light  text-body-mobile lg:text-body-mobile   text-[#282929]">
+                            ₹{collection.price || "999"}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Add to Cart - Fixed at bottom */}
+                    <div className="mt-auto flex border-2 border-home-bg-black w-fit mx-auto px-16 lg:px-8 py-2 lg:py-2 text-home-bg-black font-medium hover:bg-home-bg-black hover:text-white transition-all duration-300 cursor-pointer">
+                      <button onClick={() => handleAddToCart(collection)}>
+                        ADD TO CART
+                      </button>
+                    </div>
+                  </motion.div>
+                </Link>
               </SwiperSlide>
             ))
           )}
         </Swiper>
       </div>
-      
+
       <div className="flex justify-center mt-8 lg:mt-8">
         <div className="w-3/5 lg:w-[500px] h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
@@ -177,7 +181,7 @@ const NewArrivals = () => {
           ></div>
         </div>
       </div>
-      
+
       <div className="flex justify-center mt-4 lg:mt-8 mb-8 lg:mb-8">
         <button className="bg-home-bg-black text-white font-rubik px-20 py-4 font-medium text-[16px] hover:bg-gray-800 hover:scale-105 transition-all duration-300 cursor-pointer">
           VIEW ALL
