@@ -212,6 +212,13 @@ const PaymentPage = () => {
     handleCreateOrder();
   };
 
+  const calculateTotalWithDiscount = () => {
+  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const discountAmount = (discountPercent / 100) * subtotal; // if 0%, no discount
+  return subtotal - discountAmount;
+};
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 font-roboto">
       {/* Background Pattern */}
@@ -371,7 +378,7 @@ const PaymentPage = () => {
                         Processing Payment...
                       </div>
                     ) : (
-                      `Pay ₹${new Intl.NumberFormat('en-IN').format(calculateSubtotal())}`
+                      `Pay ₹${new Intl.NumberFormat('en-IN').format(calculateSubtotal())}` 
                     )}
                   </button>
                 </div>

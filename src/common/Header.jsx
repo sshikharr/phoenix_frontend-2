@@ -71,6 +71,10 @@ const Header = () => {
 
   const userIsAuthenticated = true;
 
+  // Discount
+  const [discountCode, setDiscountCode] = useState("");
+  const [discountPercent, setDiscountPercent] = useState(0);
+
   // Row rendering function for react-window
   const Row = ({ index, style }) => {
     const cart = cartItems[index];
@@ -311,6 +315,19 @@ const Header = () => {
 
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
+  const total = calculateSubtotal();
+  const discountedTotal = total - (total * discountPercent) / 100;
+
+  const productPrice = total;
+  const discountPercent2 = 10;
+  const discountAmount = (productPrice * discountPercent2) / 100;
+
+  const handleApplyDiscount = () => {
+  setDiscountPercent(10); // apply 10% off
+  setIsExpanded2(false)
+};
+
+
   return (
     <div className="w-full">
       {/* -----------------------------Search Bar------------------------------- */}
@@ -501,13 +518,15 @@ const Header = () => {
                   </g>
                 </svg>
               </div>
-              <div className="flex justify-between items-center border-b-[1px] text-[#c1c1c1] border-[#c1c1c1] py-3">
-                <p className="font-roboto font-normal lg:text-[14px] text-[16px]">
-                  PRODUCT
-                </p>
+              {cartItems.length > 0 && (
+                <div className="flex justify-between items-center border-b-[1px] text-[#c1c1c1] border-[#c1c1c1] py-3">
+                  <p className="font-roboto font-normal lg:text-[14px] text-[16px]">
+                    PRODUCT
+                  </p>
 
-                <p className="lg:text-[14px]">TOTAL</p>
-              </div>
+                  <p className="lg:text-[14px]">TOTAL</p>
+                </div>
+              )}
               <div className="px-0 mt-4">
                 {cartItems.length === 0 ? (
                   <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -717,7 +736,7 @@ const Header = () => {
                             <p>
                               ₹{" "}
                               {new Intl.NumberFormat("en-IN").format(
-                                calculateSubtotal()
+                                discountPercent > 0 ? discountedTotal : total
                               )}
                             </p>
                           </div>
@@ -758,7 +777,7 @@ const Header = () => {
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
-                        className="px-4 py-4 border-black"
+                        className="px-4 py-4 border-black hidden"
                       >
                         <p className="font-roboto text-body-mobile lg:text-body-desktop">
                           Here’s some additional order information:
@@ -770,6 +789,103 @@ const Header = () => {
                         </ul>
                       </motion.div>
                     )}
+                    <div className="relative ">
+                      {isExpanded2 && (
+                        <div className="fixed inset-0 bg-black bg-opacity-40 z-40"></div>
+                      )}
+                      <div className={`${isExpanded2 ? "relative" : ""}`}>
+                        {isExpanded2 && (
+                          <div className="fixed z-50 left-0 lg:left-[30%] w-full lg:w-1/3 bg-white border rounded-t-[10px] py-2 px-4 bottom-10">
+                            <div className="flex items-center">
+                              <div className="w-1/2">
+                                <p className="font-roboto text-body-mobile lg:text-subtext-desktop">
+                                  Add New Address
+                                </p>
+                              </div>
+                              <div className="w-1/2 flex justify-end">
+                                <svg
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setIsExpanded2(false);
+                                  }}
+                                  fill="#5a5a5a"
+                                  className="w-10 h-12 cursor-pointer"
+                                  viewBox="0 0 24 24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <g data-name="Layer 2">
+                                    <g data-name="close">
+                                      <rect
+                                        width="24"
+                                        height="24"
+                                        transform="rotate(180 12 12)"
+                                        opacity="0"
+                                      ></rect>
+
+                                      <path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
+                                    </g>
+                                  </g>
+                                </svg>
+                              </div>
+                            </div>
+                            <p className="text-[14px] font-rubik">
+                              Have a discount code?
+                            </p>
+                            <div className="w-full flex items-center gap-2 p-2 mt-2 border-[1px] bg-gray-100 rounded-[10px] border-[#b8b8b8]">
+                              <div className="w-[80%]">
+                                <input
+                                  className="p-3 w-full rounded-[10px] placeholder:font-rubik"
+                                  placeholder="Enter Discount Code"
+                                  type="text"
+                                  value={discountCode}
+                                  onChange={(e) =>
+                                    setDiscountCode(e.target.value)
+                                  }
+                                />
+                              </div>
+                              <div className="w-[20%]">
+                                <button
+                                  className="w-full border-[1px] p-3 font-rubik rounded-[10px] text-[#004b94] border-[#004b94]"
+                                  onClick={() => {
+                                    if (
+                                      discountCode.trim().toUpperCase() ===
+                                      "NEW10"
+                                    ) {
+                                      setDiscountPercent(10); // 10% discount
+                                    } else {
+                                      setDiscountPercent(0); // No discount
+                                    }
+                                    setIsExpanded2(false);
+                                  }}
+                                >
+                                  Apply
+                                </button>
+                              </div>
+                            </div>
+                            <div className="flex h-[150px] rounded-[10px] border-[1px] border-[#b8b8b8] mt-4">
+                              <div className="w-[10%] flex items-center justify-center bg-[#292829] rounded-l-[10px]">
+                                <span className="text-[16px] font-roboto text-white font-semibold rotate-[-90deg] origin-center whitespace-nowrap block w-full h-full flex  items-center justify-center">
+                                  ₹{discountAmount} OFF
+                                </span>
+                              </div>
+                              <div className="w-[90%] flex flex-col justify-between">
+                                <div className="px-4">
+                                  <p className="border-b-[2px] border-dotted border-[#b8b8b8] py-2">10% off on first purchase upto RS 100</p>
+                                  <p className="p-2 rounded-[10px] border-[1px] w-fit border-[#004b94] mt-2">NEW10</p>
+                                </div>
+                                <div>
+                                  <button
+                                  onClick={handleApplyDiscount}
+                                  className="text-[#004b94] w-full py-2 bg-blue-50 font-rubik text-[16px] font-medium">
+                                    Tap to Apply
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -825,14 +941,14 @@ const Header = () => {
                         >
                           {pinCodeForm && (
                             <div className="fixed z-50 left-0 lg:left-[30%] w-full lg:w-1/3 bg-white border rounded-t-[10px] py-4 px-2 bottom-10">
-                              <div className="flex">
+                              <div className="flex items-center">
                                 <div className="w-1/2">
                                   <p className="font-roboto text-body-mobile lg:text-body-desktop">
                                     Add New Address
                                   </p>
                                 </div>
                                 <div className="w-1/2 flex justify-end">
-                                  <img
+                                  {/* <img
                                     className="w-6 cursor-pointer"
                                     onClick={(e) => {
                                       e.preventDefault();
@@ -840,7 +956,30 @@ const Header = () => {
                                     }}
                                     src={close}
                                     alt=""
-                                  />
+                                  /> */}
+                                  <svg
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setPinCodeForm(false);
+                                    }}
+                                    fill="#5a5a5a"
+                                    className="w-10 h-12 cursor-pointer"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <g data-name="Layer 2">
+                                      <g data-name="close">
+                                        <rect
+                                          width="24"
+                                          height="24"
+                                          transform="rotate(180 12 12)"
+                                          opacity="0"
+                                        ></rect>
+
+                                        <path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
+                                      </g>
+                                    </g>
+                                  </svg>
                                 </div>
                               </div>
                               <div className="mt-4">
@@ -878,14 +1017,14 @@ const Header = () => {
                       {deliveryForm && (
                         <div className="mt-4">
                           <div className="lg:left-[30%] left-0 w-full bottom-0 z-50 border border-black bg-white py-4 px-2">
-                            <div className="flex">
+                            <div className="flex items-center">
                               <div className="w-1/2">
                                 <p className="font-roboto text-body-mobile lg:text-body-desktop">
                                   Add New Address
                                 </p>
                               </div>
                               <div className="w-1/2 flex justify-end">
-                                <img
+                                {/* <img
                                   className="w-6 h-6 cursor-pointer"
                                   onClick={(e) => {
                                     e.preventDefault();
@@ -893,7 +1032,30 @@ const Header = () => {
                                   }}
                                   src={close}
                                   alt=""
-                                />
+                                /> */}
+                                <svg
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setDeliveryForm(false);
+                                  }}
+                                  fill="#5a5a5a"
+                                  className="w-10 h-12 cursor-pointer"
+                                  viewBox="0 0 24 24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <g data-name="Layer 2">
+                                    <g data-name="close">
+                                      <rect
+                                        width="24"
+                                        height="24"
+                                        transform="rotate(180 12 12)"
+                                        opacity="0"
+                                      ></rect>
+
+                                      <path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
+                                    </g>
+                                  </g>
+                                </svg>
                               </div>
                             </div>
                             <div className="px-2 mt-4">
@@ -1043,7 +1205,7 @@ const Header = () => {
                           </div>
                         </div>
                       )}
-                      <div className="mt-2 space-y-2">
+                      <div className="mt-2 space-y-2 overflow-y-auto max-h-[300px] scrollbar-thin">
                         {savedAddress.length === 0 ? (
                           <div>
                             <p>No Address Available</p>
@@ -1053,7 +1215,7 @@ const Header = () => {
                             <div
                               key={index}
                               onClick={() => setSelectedAddress(addressData)}
-                              className={`border mt-6 font-roboto text-subtext-mobile lg:text-subtext-desktop py-2 cursor-pointer rounded-[10px] ${
+                              className={`border mt-6 font-roboto text-subtext-mobile lg:text-subtext-desktop py-2 cursor-pointer rounded-[10px]  ${
                                 selectedAddress === addressData
                                   ? "border-2 border-black"
                                   : "border-[#b8b8b8]"
@@ -2083,8 +2245,8 @@ const Header = () => {
               <img className="w-6 h-6" src={search} alt="" />
             </a>
             <a href={userIsAuthenticated ? "/profile" : "/login"}>
-            <img className="w-6 h-6" src={user} alt="" />
-          </a>
+              <img className="w-6 h-6" src={user} alt="" />
+            </a>
             {/* <button
             onClick={(e) => {
               e.preventDefault();
