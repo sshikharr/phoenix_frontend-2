@@ -53,7 +53,7 @@ const NewArrivals = () => {
   };
 
   return (
-    <div className="lg:h-screen mt-10">
+    <div className="lg:min-h-screen mt-10">
       {/* Toast Notification */}
       {showToast && (
         <motion.div

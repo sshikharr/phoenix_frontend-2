@@ -60,7 +60,7 @@ const BestSellers = () => {
   }, []);
 
   return (
-    <div className="mt-0 lg:h-screen overflow-hidden">
+    <div className="mt-0 lg:min-h-screen overflow-hidden">
       <div className="w-full h-full  lg:flex">
         {/* --------------------Left Div-------------------- */}
         <div className="w-full lg:w-3/5 lg:pl-8 lg:py-8  lg:px-8 bg-home-bg-black">
