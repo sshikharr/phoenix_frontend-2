@@ -33,8 +33,6 @@
 //     setProductDetail(fetchedProduct);
 //   }, []);
 
-
-
 //   const [items, setItems] = useState(1);
 
 //   // Handle item count change
@@ -232,7 +230,7 @@
 //             <div className="mt-8">
 //               <h1 className="flex items-center gap-4 font-rubik font-medium lg:text-h4-desktop text-h4-mobile text-home-bg-black">
 //                 {" "}
-//                 <img className="w-4 h-6" src={direction} alt="" /> 
+//                 <img className="w-4 h-6" src={direction} alt="" />
 //                 Check for Delivery Details
 //               </h1>
 //               <div className="relative mt-4">
@@ -302,15 +300,111 @@ import payment from "../assets/payment-method.svg";
 import exchange from "../assets/transfer.svg";
 import Header from "../common/Header";
 const Footer = React.lazy(() => import("../components/Footer"));
-import chair1 from "../assets/chair1.png"
-import chair2 from "../assets/chair2.png"
-import chair3 from "../assets/chair3.png"
-import chair4 from "../assets/chair4.png"
+import chair1 from "../assets/chair1.png";
+import chair2 from "../assets/chair2.png";
+import chair3 from "../assets/chair3.png";
+import chair4 from "../assets/chair4.png";
 
 const ProductDetail = () => {
   const [pinCode, setPinCode] = useState("");
   const [isCheckPin, setIsCheckPin] = useState(false);
   const [items, setItems] = useState(1);
+
+  const [activeTab, setActiveTab] = useState("description");
+
+  const tabs = [
+    { key: "description", label: "Product Description" },
+    { key: "shipping", label: "Shipping & Delivery" },
+    { key: "return", label: "Return Policy" },
+  ];
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "description":
+        return (
+          <div className="mt-4 space-y-4 text-[#2d2d2d]">
+            <p>
+              Introducing our Premium Ergonomic Office Chair – expertly crafted
+              to deliver maximum comfort, posture support, and stylish
+              aesthetics. Whether you're working long hours or gaming, this
+              chair offers advanced lumbar support, adjustable height, and a
+              breathable mesh back to keep you cool and comfortable.
+            </p>
+            <p>
+              Key Features:
+              <ul className="list-disc ml-5 mt-2">
+                <li>High-density molded foam cushion for lasting comfort</li>
+                <li>Adjustable armrests, seat height, and tilt tension</li>
+                <li>Breathable mesh back for optimal airflow</li>
+                <li>
+                  Durable, heavy-duty metal base with smooth-rolling wheels
+                </li>
+                <li>Modern design that fits any workspace aesthetic</li>
+              </ul>
+            </p>
+            <p>
+              Whether you're setting up a home office or upgrading your
+              professional setup, this chair is a must-have for anyone who
+              values comfort, health, and productivity.
+            </p>
+          </div>
+        );
+
+      case "shipping":
+        return (
+          <div className="mt-4 space-y-3 text-[#2d2d2d]">
+            <p>
+              <strong>Delivery Time:</strong> Orders are typically shipped
+              within 1-2 business days. Delivery may take 3-7 business days
+              depending on your location.
+            </p>
+            <p>
+              <strong>Shipping Charges:</strong> We offer FREE standard shipping
+              on all domestic orders. Expedited shipping options are available
+              at checkout.
+            </p>
+            <p>
+              <strong>Order Tracking:</strong> Once your order is shipped, you
+              will receive an email with a tracking link to monitor your
+              shipment in real-time.
+            </p>
+            <p>
+              <strong>International Shipping:</strong> Currently, we only ship
+              within India. Stay tuned as we expand to international markets.
+            </p>
+          </div>
+        );
+
+      case "return":
+        return (
+          <div className="mt-4 space-y-3 text-[#2d2d2d]">
+            <p>
+              <strong>Easy 7-Day Return Policy:</strong> Not satisfied with your
+              purchase? Return it within 7 days of delivery—no questions asked.
+            </p>
+            <p>
+              <strong>Return Conditions:</strong> Items must be unused,
+              undamaged, and returned in original packaging with tags.
+            </p>
+            <p>
+              <strong>Refunds:</strong> Once the product is received and
+              inspected, we will process your refund within 5–7 business days to
+              the original payment method.
+            </p>
+            <p>
+              <strong>Return Process:</strong> Contact our support team at{" "}
+              <a href="mailto:support@example.com" className="underline">
+                support@example.com
+              </a>{" "}
+              with your order number to initiate a return.
+            </p>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   const productDetail = {
     id: 1,
@@ -359,23 +453,23 @@ const ProductDetail = () => {
       <Header />
 
       {/* -----------------------Product Image Section--------------------------- */}
-      <div className="w-full px-8 lg:px-0 h-fit lg:flex mt-0 lg:mt-16">
-        <div className="w-full lg:w-1/2 h-full mt-4">
+      <div className="w-full px-8 lg:px-32 h-fit lg:flex mt-0 lg:mt-16">
+        <div className="w-full lg:w-1/2 h-fit mt-0">
           <div className="h-[400px]">
             <img
-              className="h-[400px] w-auto m-auto object-contain"
+              className="h-[400px] m-auto lg:m-0 lg:h-[500px]  w-auto"
               src={mainImage}
               alt="Product"
             />
           </div>
 
-          <div className="lg:h-[150px] flex justify-center gap-2 lg:gap-4 mt-4">
+          <div className="lg:h-[150px] flex  gap-2 lg:gap-6 mt-4 lg:mt-28">
             {images.map((image, index) => (
               <img
                 key={index}
                 src={image}
                 alt={`Product ${index + 1}`}
-                className={`h-[80px] lg:h-[100px] w-auto object-contain cursor-pointer transition-all duration-200 ${
+                className={`h-[80px] lg:h-[100px] w-auto m-auto lg:m-0 object-contain cursor-pointer transition-all duration-200 ${
                   mainImage === image
                     ? "border-2 border-blue-500"
                     : "opacity-70 hover:opacity-100"
@@ -494,9 +588,32 @@ const ProductDetail = () => {
                   <img className="w-8" src={exchange} alt="exchange" />
                   Easy 7 days return & exchange available
                 </p>
+                
               </div>
             )}
           </div>
+        </div>
+      </div>
+
+      <div className="lg:px-32 px-8 mt-6">
+        <div className="flex text-[#2d2d2d] gap-4 lg:gap-12 font-rubik font-medium text-[12px] lg:text-[22px] border-b border-[#B2B2B2] w-fit lg:pr-20 lg:py-0">
+          {tabs.map((tab) => (
+            <p
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`cursor-pointer pb-2 ${
+                activeTab === tab.key
+                  ? "border-b-2 border-[#000000]"
+                  : "border-b-2 border-transparent"
+              }`}
+            >
+              {tab.label}
+            </p>
+          ))}
+        </div>
+
+        <div className="text-[#2d2d2d] font-rubik text-[18px] lg:text-[20px] mt-6">
+          {renderContent()}
         </div>
       </div>
 
@@ -508,7 +625,6 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
-
 
 // import React, { useEffect, useState } from "react";
 // import { useParams } from "react-router-dom";
@@ -545,4 +661,3 @@ export default ProductDetail;
 // };
 
 // export default ProductDetail;
-
