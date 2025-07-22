@@ -178,7 +178,7 @@ const NewArrivals = () => {
         </div>
       </div>
       
-      <div className="flex justify-center mt-4 lg:mt-8 mb-8 lg:mb-0">
+      <div className="flex justify-center mt-4 lg:mt-8 mb-8 lg:mb-8">
         <button className="bg-home-bg-black text-white font-rubik px-20 py-4 font-medium text-[16px] hover:bg-gray-800 hover:scale-105 transition-all duration-300 cursor-pointer">
           VIEW ALL
         </button>
