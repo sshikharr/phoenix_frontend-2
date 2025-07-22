@@ -66,11 +66,11 @@ const NewArrivals = () => {
         </motion.div>
       )}
 
-      <h1 className="text-center font-bold font-tomorrow lg:text-h1-desktop text-h1-mobile">
+      <h1 className="text-center font-bold font-tomorrow lg:text-h2-desktop text-h1-mobile">
         NEW ARRIVALS
       </h1>
 
-      <div className="flex w-full pl-8 lg:px-8 gap-2 mt-4">
+      <div className="flex w-full pl-8 lg:px-8 gap-2 mt-6">
         <Swiper
           modules={[Pagination]}
           className="mySwiper"
@@ -128,9 +128,9 @@ const NewArrivals = () => {
                     </div>
 
                     {/* Details */}
-                    <div className="flex flex-col mx-4 text-left pr-10 mt-2 lg:mt-2 font-rubik font-medium">
-                      <p className="text-body-mobile lg:text-body-desktop line-clamp-2">
-                        {collection.title} 
+                    <div className="flex flex-col mx-4 text-left pr-0 mt-4 lg:mt-6 font-rubik">
+                      <p className="text-body-mobile font-medium  lg:text-[16px] line-clamp-2">
+                        {collection.title}  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore, aliquid.
                       </p>
                       {/* <p className="text-body-mobile lg:text-body-desktop">
                         {collection.title.split(" ").slice(0, 7).join(" ") +

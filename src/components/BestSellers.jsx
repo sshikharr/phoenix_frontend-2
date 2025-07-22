@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import stars from "../assets/Group 628218.png";
 import { CartContext } from "../context/CartContext";
+import { col } from "framer-motion/client";
 
 const BestSellers = () => {
   const [collections, setCollections] = useState([]);
@@ -70,7 +71,7 @@ const BestSellers = () => {
             transition={{ duration: 1 }}
             className=""
           >
-            <h1 className="text-white text-center lg:text-left font-bold font-tomorrow lg:text-h2-desktop text-h1-mobile pt-4 lg:pt-0">
+            <h1 className="text-white text-center lg:text-left font-bold font-tomorrow lg:text-h3-desktop text-h1-mobile pt-4 lg:pt-0 pb-2">
               BEST SELLERS
             </h1>
           </motion.div>
@@ -134,16 +135,19 @@ const BestSellers = () => {
                   {/* -----------------Div-1-3-------------------- */}
                   <div className="flex m-auto flex-col  text-left pr-0 mt-4 font-rubik font-medium">
                     <div>
-                      <p className="text-white text-h4-mobile lg:text-body-desktop">
+                      {/* <p className="text-white text-h4-mobile lg:text-body-desktop">
                         {collection.title.split(" ").slice(0, 3).join(" ") +
                           "..."}
+                      </p> */}
+                      <p className="text-white text-body-mobile lg:text-[16px] line-clamp-2">
+                        {collection.title} Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repudiandae, culpa!
                       </p>
-                      <p className="text-white text-[14px] font-light lg:text-[14px]">
+                      {/* <p className="text-white text-[14px] font-light lg:text-[14px]">
                         {collection.description
                           .split(" ")
                           .slice(0, 8)
                           .join(" ") + "..."}
-                      </p>
+                      </p> */}
                     </div>
 
                     <div className="mt-1 lg:mt-2 flex items-center gap-4">
@@ -227,12 +231,12 @@ const BestSellers = () => {
             </div>
             {/* Details */}
             <div className="lg:w-[350px] font-rubik font-medium text-home-bg-black">
-              <p className="text-h4-mobile lg:text-h4-desktop">
-                {topProduct?.title || "Product Title"}
+              <p className="text-h4-mobile lg:text-[18px] line-clamp-2">
+                {topProduct?.title || "Product Title"} Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi, molestias.
               </p>
-              <p className="text-body-mobile lg:text-subtext-desktop font-light">
+              {/* <p className="text-body-mobile lg:text-subtext-desktop font-light">
                 {topProduct?.description || "Product Title"}
-              </p>
+              </p> */}
               <div className="mt-1 lg:mt-2 flex items-center gap-4">
                 {/* <p className="font-light text-subtext-mobile lg:text-subtext-desktop mt-1">
                                       {collection.rating || "4.5 ★"}
