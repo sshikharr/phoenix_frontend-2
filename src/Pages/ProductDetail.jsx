@@ -14,10 +14,13 @@ import star2 from "../assets/star 1.png";
 import star3 from "../assets/star 2.png";
 import star4 from "../assets/StarWhite.png";
 
+
 const ProductDetail = () => {
   const [pinCode, setPinCode] = useState("");
   const [isCheckPin, setIsCheckPin] = useState(false);
   const [items, setItems] = useState(1);
+
+
 
   const [activeTab, setActiveTab] = useState("description");
 
@@ -244,7 +247,7 @@ const ProductDetail = () => {
                 </button>
               </div>
 
-              <button className="py-4 border px-8 bg-home-bg-black text-white font-rubik">
+              <button  className="py-4 border px-8 bg-home-bg-black text-white font-rubik">
                 ADD TO CART
               </button>
             </div>

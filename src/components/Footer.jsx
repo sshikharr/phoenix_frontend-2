@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const Footer = () => {
   return (
-    <div className="mt-10 lg:mt-20 pb-10 w-full bg-home-bg-black">
+    <div className="mt-10 lg:mt-20 pb-4 w-full bg-home-bg-black">
       {/* --------------Div 1---------------- */}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
@@ -190,7 +190,7 @@ const Footer = () => {
           </p>
         </div>
         <div className="w-full lg:w-2/5 m-auto flex lg:justify-end">
-          <img className="w-full" src={payment} alt="" />
+          <img className="w-[300px]" src={payment} alt="" />
         </div>
       </div>
     </div>

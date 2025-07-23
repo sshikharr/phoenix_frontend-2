@@ -34,9 +34,34 @@ import { CartContext } from "../context/CartContext";
 import { ArrowRight, ShoppingCart } from "lucide-react";
 
 const Header = () => {
-  const { cartItems, increaseQty, decreaseQty, removeFromCart } =
-    useContext(CartContext);
-  const { calculateSubtotal } = useContext(CartContext);
+  // const { cartItems, increaseQty, decreaseQty, removeFromCart } =
+  //   useContext(CartContext);
+  const {
+    cartItems,
+
+    increaseQty,
+    decreaseQty,
+    removeFromCart,
+    totalItems,
+    subtotal,
+    discountedTotal,
+    discountAmount,
+    finalTotal,
+    discountPercent,
+    discountCode,
+    applyDiscountCode,
+    removeDiscount,
+    applyFixedDiscount,
+    isDiscountAvailable,
+    setDiscountCode,
+    calculateSubtotal
+  } = useContext(CartContext);
+  // const { calculateSubtotal } = useContext(CartContext);
+
+  useEffect(() => {
+    // Clear applied coupon/discount when coming back
+    removeDiscount();
+  }, []);
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isShopByOpen, setIsShopByOpen] = useState(false);
@@ -71,9 +96,9 @@ const Header = () => {
 
   const userIsAuthenticated = true;
 
-  // Discount
-  const [discountCode, setDiscountCode] = useState("");
-  const [discountPercent, setDiscountPercent] = useState(0);
+  // // Discount
+  // const [discountCode, setDiscountCode] = useState("");
+  // const [discountPercent, setDiscountPercent] = useState(0);
 
   // Row rendering function for react-window
   const Row = ({ index, style }) => {
@@ -313,18 +338,36 @@ const Header = () => {
     };
   }, [isMenuOpen]);
 
-  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  // const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
-  const total = calculateSubtotal();
-  const discountedTotal = total - (total * discountPercent) / 100;
+  // const total = calculateSubtotal();
+  // const discountedTotal = total - (total * discountPercent) / 100;
 
-  const productPrice = total;
-  const discountPercent2 = 10;
-  const discountAmount = (productPrice * discountPercent2) / 100;
+  // const productPrice = total;
+  // const discountPercent2 = 10;
+  // const discountAmount = (productPrice * discountPercent2) / 100;
+
+  // const handleApplyDiscount = () => {
+  //   setDiscountPercent(10); // apply 10% off
+  //   setIsExpanded2(false);
+  // };
+
+  const [tempDiscountCode, setTempDiscountCode] = useState("");
 
   const handleApplyDiscount = () => {
-    setDiscountPercent(10); // apply 10% off
+    applyFixedDiscount(10); // Apply 10% discount directly
     setIsExpanded2(false);
+  };
+
+  const handleDiscountCodeSubmit = () => {
+    const result = applyDiscountCode(tempDiscountCode);
+    if (result.success) {
+      setIsExpanded2(false);
+      setTempDiscountCode("");
+    } else {
+      // Handle error - you can show a toast or error message
+      alert(result.message);
+    }
   };
 
   return (
@@ -341,20 +384,34 @@ const Header = () => {
             }}
             className="w-full bg-white fixed top-0 z-50 py-10 flex flex-col gap-8 justify-center items-center overflow-hidden"
           >
-            <div className="absolute top-8 right-8">
-              <a
-                className="text-[20px] font-bold font-rubik"
-                href="#"
-                onClick={() => setIsSearchOpen(false)}
-              >
-                X
-              </a>
+            <div className="relative w-full flex items-center justify-center">
+              {/* Centered Heading */}
+              <motion.div>
+                <h1 className="font-rubik font-bold text-[28px] text-home-bg-black text-center">
+                  What are you looking for?
+                </h1>
+              </motion.div>
+
+              {/* Close Icon Positioned Absolutely to the Right */}
+              <div className="absolute right-8">
+                <svg
+                  onClick={() => setIsSearchOpen(false)}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="#5a5a5a"
+                  className="size-8 cursor-pointer"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </div>
             </div>
-            <motion.div>
-              <h1 className="font-rubik font-bold text-[28px] text-home-bg-black">
-                What are you looking for?
-              </h1>
-            </motion.div>
+
             <motion.div className="w-full flex justify-center items-center">
               <input
                 type="text"
@@ -497,28 +554,25 @@ const Header = () => {
                 </p>
 
                 <svg
-                  onClick={() => setIsCartOpen(false)}
-                  fill="#5a5a5a"
-                  className="w-10 h-12 cursor-pointer"
-                  viewBox="0 0 24 24"
+                  onClick={() => {
+                    setIsCartOpen(false);
+                  }}
                   xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="#5a5a5a"
+                  className="size-6 cursor-pointer"
                 >
-                  <g data-name="Layer 2">
-                    <g data-name="close">
-                      <rect
-                        width="24"
-                        height="24"
-                        transform="rotate(180 12 12)"
-                        opacity="0"
-                      ></rect>
-
-                      <path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
-                    </g>
-                  </g>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
                 </svg>
               </div>
               {cartItems.length > 0 && (
-                <div className="flex justify-between items-center border-b-[1px] text-[#c1c1c1] border-[#c1c1c1] py-3">
+                <div className="flex justify-between items-center border-b-[1px] text-[#c1c1c1] border-[#c1c1c1] py-4">
                   <p className="font-roboto font-normal lg:text-[14px] text-[16px]">
                     PRODUCT
                   </p>
@@ -545,7 +599,7 @@ const Header = () => {
 
                     {/* Subtext */}
                     <p className="text-gray-600 text-center mb-8 max-w-md leading-relaxed">
-                      Looks like you haven't added any items to your cart yet.
+                      Looks like you have not added any items to your cart yet.
                       Start shopping to find amazing products!
                     </p>
 
@@ -619,7 +673,7 @@ const Header = () => {
                       setIsCheckOut(true);
                     }}
                   >
-                    Check Out
+                    Checkout
                   </button>
                 </div>
               )}
@@ -642,24 +696,38 @@ const Header = () => {
             <div className="fixed flex flex-col justify-between lg:w-1/3 w-full lg:left-[30%] bg-[#f3f4f9] py-10 mt-10 overflow-y-auto h-full lg:h-[90vh] lg:max-h-[90vh] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
               <div>
                 <div className="relative flex w-full px-4 text-center justify-center items-center">
-                  <img
+                  <svg
                     onClick={(e) => {
                       e.preventDefault();
                       setIsCheckOut(false);
                       setDeliveryForm(false);
                       setIsExpanded(false);
                       setIsExpanded2(false);
+                      removeDiscount(); // Remove applied coupon
+                      setTempDiscountCode(""); // Clear temp discount code input
                     }}
-                    className="w-6 absolute cursor-pointer left-6"
-                    src={back}
-                    alt=""
-                  />
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="#5a5a5a"
+                    className="size-6 absolute left-6 cursor-pointer"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+                    />
+                  </svg>
+
                   <p className="font-tomorrow font-bold text-h2-mobile lg:text-h2-desktop">
                     PHEONIX
                   </p>
                 </div>
+                {/* Summary And Coupon */}
                 <div className="w-full mt-10 px-4 space-y-4">
-                  <div className=" bg-white w-full rounded-[10px]">
+                  {/* ORDER SUMMARY SECTION */}
+                  <div className="bg-white w-full rounded-[10px]">
                     {/* Order Summary Header */}
                     <div
                       className="h-fit w-full flex px-2 cursor-pointer items-center justify-between py-4"
@@ -681,7 +749,7 @@ const Header = () => {
                                 {new Intl.NumberFormat("en-IN", {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
-                                }).format(calculateSubtotal())}
+                                }).format(subtotal)}
                               </span>
                               <span className="text-green-700 font-semibold">
                                 ₹
@@ -697,7 +765,7 @@ const Header = () => {
                               {new Intl.NumberFormat("en-IN", {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
-                              }).format(calculateSubtotal())}
+                              }).format(subtotal)}
                             </>
                           )}
                           )
@@ -741,21 +809,77 @@ const Header = () => {
                                   <p className="text-base font-semibold line-clamp-2">
                                     {item.title}
                                   </p>
-                                  <p className="text-sm text-gray-500 mt-1">
-                                    ₹{item.price}
+                                  <p className="text-sm text-gray-600 mt-1">
+                                    Qty: {item.quantity || 1}
                                   </p>
+                                  <div className="mt-1">
+                                    {discountPercent > 0 ? (
+                                      <div className="flex items-center gap-2">
+                                        <p className="text-sm text-[#292829] line-through">
+                                          ₹
+                                          {new Intl.NumberFormat("en-IN", {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2,
+                                          }).format(
+                                            parseFloat(
+                                              item.price?.replace(",", "") || 0
+                                            )
+                                          )}
+                                        </p>
+                                        <p className="text-sm text-green-600 font-medium">
+                                          ₹
+                                          {new Intl.NumberFormat("en-IN", {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2,
+                                          }).format(
+                                            parseFloat(
+                                              item.price?.replace(",", "") || 0
+                                            ) *
+                                              (1 - discountPercent / 100)
+                                          )}
+                                        </p>
+                                      </div>
+                                    ) : (
+                                      <p className="text-sm text-[#292829]">
+                                        ₹
+                                        {new Intl.NumberFormat("en-IN", {
+                                          minimumFractionDigits: 2,
+                                          maximumFractionDigits: 2,
+                                        }).format(
+                                          parseFloat(
+                                            item.price?.replace(",", "") || 0
+                                          )
+                                        )}
+                                      </p>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             ))}
                           </div>
 
                           {/* Sub Total */}
-                          <div className="flex items-center lg:text-[14px] font-roboto justify-between mt-4 border-b-[1px] border-[#b8b8b8] py-2">
+                          <div className="flex items-center lg:text-[14px] font-roboto justify-between mt-4  border-[#b8b8b8] py-2">
                             <p>Subtotal</p>
                             <p>
-                              ₹ {new Intl.NumberFormat("en-IN").format(total)}
+                              ₹{" "}
+                              {new Intl.NumberFormat("en-IN").format(subtotal)}
                             </p>
                           </div>
+
+                          {/* Discount Row (only show if discount is applied) */}
+                          {discountPercent > 0 && (
+                            <div className="flex items-center lg:text-[14px] font-roboto justify-between border-b-[1px] border-[#b8b8b8] py-2">
+                              <p>Product discount ({discountPercent}%)</p>
+                              <p>
+                                ₹
+                                {new Intl.NumberFormat("en-IN", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }).format(discountAmount)}
+                              </p>
+                            </div>
+                          )}
 
                           {/* Total */}
                           <div className="flex items-center lg:text-[14px] font-roboto justify-between py-2">
@@ -765,9 +889,7 @@ const Header = () => {
                               {new Intl.NumberFormat("en-IN", {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
-                              }).format(
-                                discountPercent > 0 ? discountedTotal : total
-                              )}
+                              }).format(finalTotal)}
                             </p>
                           </div>
                         </motion.div>
@@ -775,8 +897,9 @@ const Header = () => {
                     </AnimatePresence>
                   </div>
 
-                  <div className=" bg-white w-full rounded-[10px]">
-                    {/* Order Summary Header */}
+                  {/* COUPONS SECTION */}
+                  <div className="bg-white w-full rounded-[10px]">
+                    {/* Coupon Header */}
                     <div
                       className="h-fit w-full flex px-2 cursor-pointer items-center justify-between py-4"
                       onClick={handleToggle2}
@@ -789,7 +912,7 @@ const Header = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <p className="font-roboto text-body-mobile lg:text-[14px] text-[#004b94]">
-                          1 available
+                          {isDiscountAvailable() ? "1 available" : "Applied"}
                         </p>
                         <img
                           className={`w-4 transform transition-transform ${
@@ -800,19 +923,21 @@ const Header = () => {
                         />
                       </div>
                     </div>
+
+                    {/* Applied Discount Indicator */}
                     <div className="">
                       {discountPercent > 0 && (
                         <div className="h-fit w-full flex px-4 cursor-pointer items-center justify-between py-4">
                           <p className="text-[12px] text-[#292829] font-roboto">
-                            Discount applied! 🎉
+                            Discount applied! 🎉 ({discountCode} -{" "}
+                            {discountPercent}% off)
                           </p>
                           <p
                             onClick={(e) => {
-                              e.stopPropagation(); // Prevent dropdown toggle
-                              setDiscountCode("");
-                              setDiscountPercent(0);
+                              e.stopPropagation();
+                              removeDiscount();
                             }}
-                            className="text-[12px] text-red-500 font-roboto"
+                            className="text-[12px] text-red-500 font-roboto cursor-pointer"
                           >
                             Remove
                           </p>
@@ -820,25 +945,8 @@ const Header = () => {
                       )}
                     </div>
 
-                    {/* Expanded Content */}
-                    {isExpanded2 && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="px-4 py-4 border-black hidden"
-                      >
-                        <p className="font-roboto text-body-mobile lg:text-body-desktop">
-                          Here’s some additional order information:
-                        </p>
-                        <ul className="list-disc pl-4">
-                          <li>Delivery Estimate: 3-5 business days</li>
-                          <li>Shipping Charges: Free</li>
-                          <li>Discount: ₹ 100</li>
-                        </ul>
-                      </motion.div>
-                    )}
-                    <div className="relative ">
+                    {/* Coupon Modal */}
+                    <div className="relative">
                       {isExpanded2 && (
                         <div className="fixed inset-0 bg-black bg-opacity-40 z-40"></div>
                       )}
@@ -848,7 +956,7 @@ const Header = () => {
                             <div className="flex items-center">
                               <div className="w-1/2">
                                 <p className="font-roboto text-body-mobile lg:text-subtext-desktop">
-                                  Add New Address
+                                  Apply Coupon
                                 </p>
                               </div>
                               <div className="w-1/2 flex justify-end">
@@ -856,24 +964,20 @@ const Header = () => {
                                   onClick={(e) => {
                                     e.preventDefault();
                                     setIsExpanded2(false);
+                                    setTempDiscountCode("");
                                   }}
-                                  fill="#5a5a5a"
-                                  className="w-10 h-12 cursor-pointer"
-                                  viewBox="0 0 24 24"
                                   xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="1.5"
+                                  stroke="#5a5a5a"
+                                  className="size-6 cursor-pointer"
                                 >
-                                  <g data-name="Layer 2">
-                                    <g data-name="close">
-                                      <rect
-                                        width="24"
-                                        height="24"
-                                        transform="rotate(180 12 12)"
-                                        opacity="0"
-                                      ></rect>
-
-                                      <path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
-                                    </g>
-                                  </g>
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 18 18 6M6 6l12 12"
+                                  />
                                 </svg>
                               </div>
                             </div>
@@ -886,35 +990,27 @@ const Header = () => {
                                   className="p-3 w-full rounded-[10px] placeholder:font-rubik"
                                   placeholder="Enter Discount Code"
                                   type="text"
-                                  value={discountCode}
+                                  value={tempDiscountCode}
                                   onChange={(e) =>
-                                    setDiscountCode(e.target.value)
+                                    setTempDiscountCode(e.target.value)
                                   }
                                 />
                               </div>
                               <div className="w-[20%]">
                                 <button
                                   className="w-full border-[1px] p-3 font-rubik rounded-[10px] text-[#004b94] border-[#004b94]"
-                                  onClick={() => {
-                                    if (
-                                      discountCode.trim().toUpperCase() ===
-                                      "NEW10"
-                                    ) {
-                                      setDiscountPercent(10); // 10% discount
-                                    } else {
-                                      setDiscountPercent(0); // No discount
-                                    }
-                                    setIsExpanded2(false);
-                                  }}
+                                  onClick={handleDiscountCodeSubmit}
                                 >
                                   Apply
                                 </button>
                               </div>
                             </div>
+
+                            {/* Available Coupon Card */}
                             <div className="flex h-[160px] rounded-[10px] border-[1px] border-[#b8b8b8] mt-4">
                               <div className="w-[10%] flex items-center justify-center bg-[#292829] rounded-l-[10px]">
-                                <span className="text-[16px] font-roboto text-white font-semibold rotate-[-90deg] origin-center whitespace-nowrap block w-full h-full flex  items-center justify-center">
-                                  ₹{discountAmount} OFF
+                                <span className="text-[16px] font-roboto text-white font-semibold rotate-[-90deg] origin-center whitespace-nowrap block w-full h-full flex items-center justify-center">
+                                  ₹{Math.floor((subtotal * 10) / 100)} OFF
                                 </span>
                               </div>
                               <div className="w-[90%] flex flex-col justify-between">
@@ -930,8 +1026,11 @@ const Header = () => {
                                   <button
                                     onClick={handleApplyDiscount}
                                     className="text-[#004b94] w-full py-2 bg-blue-50 font-rubik text-[16px] font-medium rounded-br-[10px]"
+                                    disabled={discountPercent > 0}
                                   >
-                                    Tap to Apply
+                                    {discountPercent > 0
+                                      ? "Applied"
+                                      : "Tap to Apply"}
                                   </button>
                                 </div>
                               </div>
@@ -942,7 +1041,7 @@ const Header = () => {
                     </div>
                   </div>
                 </div>
-
+                {/* Address */}
                 <div className="mt-4 w-full h-fit px-4 ">
                   {userIsAuthenticated ? (
                     <div className=" px-4 py-4 bg-white rounded-[10px]">
@@ -1002,37 +1101,23 @@ const Header = () => {
                                   </p>
                                 </div>
                                 <div className="w-1/2 flex justify-end">
-                                  {/* <img
-                                    className="w-6 cursor-pointer"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      setPinCodeForm(false);
-                                    }}
-                                    src={close}
-                                    alt=""
-                                  /> */}
                                   <svg
                                     onClick={(e) => {
                                       e.preventDefault();
                                       setPinCodeForm(false);
                                     }}
-                                    fill="#5a5a5a"
-                                    className="w-10 h-12 cursor-pointer"
-                                    viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="#5a5a5a"
+                                    className="size-6 cursor-pointer"
                                   >
-                                    <g data-name="Layer 2">
-                                      <g data-name="close">
-                                        <rect
-                                          width="24"
-                                          height="24"
-                                          transform="rotate(180 12 12)"
-                                          opacity="0"
-                                        ></rect>
-
-                                        <path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
-                                      </g>
-                                    </g>
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M6 18 18 6M6 6l12 12"
+                                    />
                                   </svg>
                                 </div>
                               </div>
@@ -1078,37 +1163,23 @@ const Header = () => {
                                 </p>
                               </div>
                               <div className="w-1/2 flex justify-end">
-                                {/* <img
-                                  className="w-6 h-6 cursor-pointer"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    setDeliveryForm(false);
-                                  }}
-                                  src={close}
-                                  alt=""
-                                /> */}
                                 <svg
                                   onClick={(e) => {
                                     e.preventDefault();
                                     setDeliveryForm(false);
                                   }}
-                                  fill="#5a5a5a"
-                                  className="w-10 h-12 cursor-pointer"
-                                  viewBox="0 0 24 24"
                                   xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="1.5"
+                                  stroke="#5a5a5a"
+                                  className="size-6 cursor-pointer"
                                 >
-                                  <g data-name="Layer 2">
-                                    <g data-name="close">
-                                      <rect
-                                        width="24"
-                                        height="24"
-                                        transform="rotate(180 12 12)"
-                                        opacity="0"
-                                      ></rect>
-
-                                      <path d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
-                                    </g>
-                                  </g>
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 18 18 6M6 6l12 12"
+                                  />
                                 </svg>
                               </div>
                             </div>
@@ -2211,7 +2282,7 @@ const Header = () => {
               <Link to="/faqs">FAQs</Link>
             </div>
             <div className="py-4 f-full   ">
-              <a href="">Contact Us</a>
+              <Link to="/contact-us">Contact Us</Link>
             </div>
           </div>
 
@@ -2296,10 +2367,10 @@ const Header = () => {
           </div>
           <div className="w-3/5 pr-4  flex justify-end items-center gap-4 py-4">
             <a href="">
-              <img className="w-6 h-6" src={search} alt="" />
+              <img className="w-4 h-4" src={search} alt="" />
             </a>
             <a href={userIsAuthenticated ? "/profile" : "/login"}>
-              <img className="w-6 h-6" src={user} alt="" />
+              <img className="w-4 h-4" src={user} alt="" />
             </a>
             {/* <button
             onClick={(e) => {
@@ -2317,7 +2388,7 @@ const Header = () => {
               }}
               className="relative"
             >
-              <img className="w-6" src={cart} alt="Cart" />
+              <img className="w-4" src={cart} alt="Cart" />
 
               {cartItems.length > 0 && (
                 <span className="absolute -top-3 bg-red-500 px-2 py-0 -right-4 text-white text-[16px] font-bold rounded-full ">

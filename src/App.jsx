@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "r
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx"; // Adjust path to your AuthContext
 import PaymentPage from "./Pages/PaymentPage.jsx";
 import Profile from "./Auth/Profile.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 
 // Import Components
 const Home = lazy(() => import("./components/Home"));
@@ -67,6 +68,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+         <ScrollToTop />
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
             <Route path="/" element={<Home />} />

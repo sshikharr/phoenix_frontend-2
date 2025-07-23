@@ -85,7 +85,7 @@ const Profile = () => {
                 className="inline-flex items-center gap-2 px-8 py-3 lg:py-4 bg-auth-bg text-white font-rubik font-medium text-h3-mobile lg:text-h3-desktop rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-sm hover:shadow-md"
                 onClick={handleLogout}
                 >
-                🚪 Logout
+                 Logout
                 </button>
             </div>
         </div>
