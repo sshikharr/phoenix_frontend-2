@@ -323,10 +323,9 @@ const Header = () => {
   const discountAmount = (productPrice * discountPercent2) / 100;
 
   const handleApplyDiscount = () => {
-  setDiscountPercent(10); // apply 10% off
-  setIsExpanded2(false)
-};
-
+    setDiscountPercent(10); // apply 10% off
+    setIsExpanded2(false);
+  };
 
   return (
     <div className="w-full">
@@ -640,7 +639,7 @@ const Header = () => {
             transition={{ duration: 0.5 }}
             className="fixed inset-0 z-50 bg-black bg-opacity-50"
           >
-            <div className="fixed flex flex-col justify-between lg:w-1/3 w-full lg:left-[30%] bg-[#f3f4f9] py-10 mt-10 overflow-y-auto h-[90vh] max-h-[90vh] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+            <div className="fixed flex flex-col justify-between lg:w-1/3 w-full lg:left-[30%] bg-[#f3f4f9] py-10 mt-10 overflow-y-auto h-full lg:h-[90vh] lg:max-h-[90vh] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
               <div>
                 <div className="relative flex w-full px-4 text-center justify-center items-center">
                   <img
@@ -673,6 +672,37 @@ const Header = () => {
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
+                        <p className="font-roboto text-[14px]">
+                          {totalItems} {totalItems === 1 ? "item" : "items"} (
+                          {discountPercent > 0 ? (
+                            <>
+                              <span className="line-through text-gray-500 mr-1">
+                                ₹
+                                {new Intl.NumberFormat("en-IN", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }).format(calculateSubtotal())}
+                              </span>
+                              <span className="text-green-700 font-semibold">
+                                ₹
+                                {new Intl.NumberFormat("en-IN", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }).format(discountedTotal)}
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              ₹
+                              {new Intl.NumberFormat("en-IN", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }).format(calculateSubtotal())}
+                            </>
+                          )}
+                          )
+                        </p>
+
                         <img
                           className={`w-4 transform transition-transform ${
                             isExpanded ? "rotate-180" : "rotate-0"
@@ -691,17 +721,6 @@ const Header = () => {
                           transition={{ duration: 0.5 }}
                           className="px-4 py-4 border-black"
                         >
-                          <div className="flex items-center justify-between mb-4">
-                            <p>Order Summary</p>
-                            <p>
-                              {totalItems} items (₹{" "}
-                              {new Intl.NumberFormat("en-IN").format(
-                                calculateSubtotal()
-                              )}
-                              )
-                            </p>
-                          </div>
-
                           {/* Scrollable Section */}
                           <div className="flex flex-col gap-4 max-h-80 py-2 overflow-y-auto scrollbar-thin pr-2">
                             {cartItems.map((item) => (
@@ -730,12 +749,23 @@ const Header = () => {
                             ))}
                           </div>
 
+                          {/* Sub Total */}
+                          <div className="flex items-center lg:text-[14px] font-roboto justify-between mt-4 border-b-[1px] border-[#b8b8b8] py-2">
+                            <p>Subtotal</p>
+                            <p>
+                              ₹ {new Intl.NumberFormat("en-IN").format(total)}
+                            </p>
+                          </div>
+
                           {/* Total */}
-                          <div className="flex items-center lg:text-[24px] font-roboto justify-between mt-4">
+                          <div className="flex items-center lg:text-[14px] font-roboto justify-between py-2">
                             <p>Total</p>
                             <p>
                               ₹{" "}
-                              {new Intl.NumberFormat("en-IN").format(
+                              {new Intl.NumberFormat("en-IN", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }).format(
                                 discountPercent > 0 ? discountedTotal : total
                               )}
                             </p>
@@ -770,6 +800,25 @@ const Header = () => {
                         />
                       </div>
                     </div>
+                    <div className="">
+                      {discountPercent > 0 && (
+                        <div className="h-fit w-full flex px-4 cursor-pointer items-center justify-between py-4">
+                          <p className="text-[12px] text-[#292829] font-roboto">
+                            Discount applied! 🎉
+                          </p>
+                          <p
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent dropdown toggle
+                              setDiscountCode("");
+                              setDiscountPercent(0);
+                            }}
+                            className="text-[12px] text-red-500 font-roboto"
+                          >
+                            Remove
+                          </p>
+                        </div>
+                      )}
+                    </div>
 
                     {/* Expanded Content */}
                     {isExpanded2 && (
@@ -795,7 +844,7 @@ const Header = () => {
                       )}
                       <div className={`${isExpanded2 ? "relative" : ""}`}>
                         {isExpanded2 && (
-                          <div className="fixed z-50 left-0 lg:left-[30%] w-full lg:w-1/3 bg-white border rounded-t-[10px] py-2 px-4 bottom-10">
+                          <div className="fixed z-50 left-0 lg:left-[30%] w-full lg:w-1/3 bg-white border rounded-t-[10px] py-2 px-4 bottom-0 lg:bottom-10">
                             <div className="flex items-center">
                               <div className="w-1/2">
                                 <p className="font-roboto text-body-mobile lg:text-subtext-desktop">
@@ -862,7 +911,7 @@ const Header = () => {
                                 </button>
                               </div>
                             </div>
-                            <div className="flex h-[150px] rounded-[10px] border-[1px] border-[#b8b8b8] mt-4">
+                            <div className="flex h-[160px] rounded-[10px] border-[1px] border-[#b8b8b8] mt-4">
                               <div className="w-[10%] flex items-center justify-center bg-[#292829] rounded-l-[10px]">
                                 <span className="text-[16px] font-roboto text-white font-semibold rotate-[-90deg] origin-center whitespace-nowrap block w-full h-full flex  items-center justify-center">
                                   ₹{discountAmount} OFF
@@ -870,13 +919,18 @@ const Header = () => {
                               </div>
                               <div className="w-[90%] flex flex-col justify-between">
                                 <div className="px-4">
-                                  <p className="border-b-[2px] border-dotted border-[#b8b8b8] py-2">10% off on first purchase upto RS 100</p>
-                                  <p className="p-2 rounded-[10px] border-[1px] w-fit border-[#004b94] mt-2">NEW10</p>
+                                  <p className="border-b-[2px] border-dotted border-[#b8b8b8] py-2">
+                                    10% off on first purchase upto RS 100
+                                  </p>
+                                  <p className="p-2 rounded-[10px] border-[1px] w-fit border-[#004b94] mt-2">
+                                    NEW10
+                                  </p>
                                 </div>
                                 <div>
                                   <button
-                                  onClick={handleApplyDiscount}
-                                  className="text-[#004b94] w-full py-2 bg-blue-50 font-rubik text-[16px] font-medium rounded-bl-[10px]">
+                                    onClick={handleApplyDiscount}
+                                    className="text-[#004b94] w-full py-2 bg-blue-50 font-rubik text-[16px] font-medium rounded-br-[10px]"
+                                  >
                                     Tap to Apply
                                   </button>
                                 </div>
@@ -940,7 +994,7 @@ const Header = () => {
                           className={`${pinCodeForm ? "relative z-50" : ""}`}
                         >
                           {pinCodeForm && (
-                            <div className="fixed z-50 left-0 lg:left-[30%] w-full lg:w-1/3 bg-white border rounded-t-[10px] py-4 px-2 bottom-10">
+                            <div className="fixed z-50 left-0 lg:left-[30%] w-full lg:w-1/3 bg-white border rounded-t-[10px] py-4 px-2 bottom-0 lg:bottom-10">
                               <div className="flex items-center">
                                 <div className="w-1/2">
                                   <p className="font-roboto text-body-mobile lg:text-body-desktop">
